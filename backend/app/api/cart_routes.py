@@ -57,13 +57,13 @@ def update_cart(cart_id):
     new_quantity =data.get("quantity")
 
     if new_quantity <= 0:
-        return jsonify({"message": "Quantity must be greater than 0"})
+        return jsonify({"message": "Quantity must be greater than 0"}), 400
     
     cart_item.quantity = new_quantity
 
     db.session.commit()
 
-    return jsonify({"item": cart_item.to_dict()})
+    return jsonify({"item": cart_item.to_dict()}), 200
     
 
 
