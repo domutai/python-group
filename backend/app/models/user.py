@@ -19,7 +19,8 @@ class User(db.Model, UserMixin):
     created_at = db.Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
-    carts = db.relationship('Cart', back_populates='user')
+    cart = db.relationship('Cart', back_populates='users')
+    product = db.relationship('Product', back_populates='users')
 
     @property
     def password(self):
