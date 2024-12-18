@@ -22,6 +22,10 @@ class User(db.Model, UserMixin):
     cart = db.relationship('Cart', back_populates='users')
     product = db.relationship('Product', back_populates='users')
 
+    carts = db.relationship('Cart', back_populates='user', cascade="all, delete-orphan")
+    favorites = db.relationship('Favorite', back_populates='user', cascade="all, delete-orphan")
+
+
     @property
     def password(self):
         return self.hashed_password
