@@ -1,6 +1,7 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .carts import seed_carts, undo_carts
+from .favorites import seed_favorites, undo_favorites
 
 from app.models.db import environment 
 
@@ -18,9 +19,11 @@ def seed():
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
         undo_users()
-        undo.carts()
+        undo_carts()
+        undo_favorites()
     seed_users()
     seed_carts()
+    seed_favorites()
     # Add other seed functions here
 
 
@@ -29,4 +32,5 @@ def seed():
 def undo():
     undo_users()
     undo_carts()
+    undo_favorites()
     # Add other undo functions here
