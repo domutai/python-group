@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from app.models import db, Product
+from app.models import db, Product, ProductImage, Favorite
 
 product_routes = Blueprint("products", __name__, url_prefix="/api/products")
 
@@ -80,7 +80,96 @@ def delete_product(id):
     if product.owner_id != current_user.id:
         return jsonify({"error": "Unauthorized"}), 403
 
+    Favorite.query.filter_by(productId=id).delete()
+
     db.session.delete(product)
     db.session.commit()
 
     return jsonify({"message": "Product deleted successfully."}), 200
+
+# 2.1 GET /api/products/:id/images – View All Images for a Product
+@product_routes.route("/<int:id>/images", methods=["GET"])
+def get_product_images(id):
+    product = Product.query.get(id)
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    images = ProductImage.query.filter_by(product_id=id).all()
+    return jsonify([
+        {
+            "id": image.id,
+            "product_id": image.product_id,
+            "imageURL": image.imageURL,
+            "isPreview": image.isPreview
+        } for image in images
+    ]), 200
+
+# 2.2 POST /api/products/:id/images – Add an Image to a Product
+@product_routes.route("/<int:id>/images", methods=["POST"])
+@login_required
+def add_product_image(id):
+    product = Product.query.get(id)
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    if product.owner_id != current_user.id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    data = request.get_json()
+    new_image = ProductImage(
+        product_id=id,
+        imageURL=data.get("imageURL"),
+        isPreview=data.get("isPreview", False)
+    )
+
+    db.session.add(new_image)
+    db.session.commit()
+
+    return jsonify({
+        "id": new_image.id,
+        "product_id": new_image.product_id,
+        "imageURL": new_image.imageURL,
+        "isPreview": new_image.isPreview
+    }), 201
+
+# 2.3 PUT /api/products/images/:image_id – Update an Image
+@product_routes.route("/images/<int:image_id>", methods=["PUT"])
+@login_required
+def update_product_image(image_id):
+    image = ProductImage.query.get(image_id)
+    if not image:
+        return jsonify({"error": "Image not found"}), 404
+
+    product = Product.query.get(image.product_id)
+    if product.owner_id != current_user.id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    data = request.get_json()
+    image.imageURL = data.get("imageURL", image.imageURL)
+    image.isPreview = data.get("isPreview", image.isPreview)
+
+    db.session.commit()
+
+    return jsonify({
+        "id": image.id,
+        "product_id": image.product_id,
+        "imageURL": image.imageURL,
+        "isPreview": image.isPreview
+    }), 200
+
+# 2.4 DELETE /api/products/images/:image_id – Delete an Image
+@product_routes.route("/images/<int:image_id>", methods=["DELETE"])
+@login_required
+def delete_product_image(image_id):
+    image = ProductImage.query.get(image_id)
+    if not image:
+        return jsonify({"error": "Image not found"}), 404
+
+    product = Product.query.get(image.product_id)
+    if product.owner_id != current_user.id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    db.session.delete(image)
+    db.session.commit()
+
+    return jsonify({"message": "Image deleted successfully."}), 200
