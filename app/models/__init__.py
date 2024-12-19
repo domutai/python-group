@@ -4,3 +4,4 @@ from .product import Product, ProductImage
 from .cart import Cart
 from .favorite import Favorite
 from .db import environment, SCHEMA
+from .review import Review
