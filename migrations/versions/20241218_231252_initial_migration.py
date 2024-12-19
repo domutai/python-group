@@ -68,6 +68,19 @@ def upgrade():
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('reviews',
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('userID', sa.Integer(), nullable=False),
+        sa.Column('productid', sa.Integer(), nullable=False),
+        sa.Column('reviewText', sa.Text(), nullable=False),
+        sa.Column('stars', sa.Integer(), nullable=False),
+        sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+        sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+        sa.ForeignKeyConstraint(['userID'], ['users.id'], ),
+        sa.ForeignKeyConstraint(['productid'], ['products.id'], ),
+        sa.PrimaryKeyConstraint('id')
+    )
+    
     # ### end Alembic commands ###
 
 
@@ -78,4 +91,5 @@ def downgrade():
     op.drop_table('carts')
     op.drop_table('products')
     op.drop_table('users')
+    op.drop_table('reviews')
     # ### end Alembic commands ###
