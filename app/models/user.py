@@ -1,8 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-#from datetime import datetime
-#from sqlalchemy import DateTime
 
 
 class User(db.Model, UserMixin):
@@ -16,13 +14,9 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    #created_at = db.Column(DateTime, default=datetime.utcnow, nullable=False)
-    #updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     createdAt = db.Column(db.DateTime, server_default=db.func.now())
     updatedAt = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
-    #cart = db.relationship('Cart', back_populates='users')
-    #product = db.relationship('Product', back_populates='users')
 
     carts = db.relationship('Cart', back_populates='user', cascade="all, delete-orphan")
     favorites = db.relationship('Favorite', back_populates='user', cascade="all, delete-orphan")
