@@ -12,7 +12,7 @@ def index():
     cart = Cart.query.filter(Cart.userId == current_user.id).all()
     if not cart:
         return jsonify({'message': 'Shopping cart is empty.'}), 400
-    return jsonify({'cart': [product.to_dict() for product in cart]})
+    return jsonify({'cart': [product.to_dict() for product in cart]}), 200
 
 @cart_routes.route('/', methods=["POST"])
 @login_required
