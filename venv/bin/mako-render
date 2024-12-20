@@ -1,4 +1,4 @@
-#!/Users/jeffreychen/Desktop/appAcademyProjects/python-group/backend/venv/bin/python3.9
+#!/Users/jeffreychen/Desktop/appAcademyProjects/python-group/venv/bin/python3.9
 # -*- coding: utf-8 -*-
 import re
 import sys

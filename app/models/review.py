@@ -1,12 +1,12 @@
-from .db import db
+from .db import db, add_prefix_for_prod
 from datetime import datetime
 
 class Review(db.Model):
     __tablename__ = 'reviews'
 
     id = db.Column(db.Integer, primary_key=True)
-    userID = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    productid = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    userID = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    productid = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('products.id')), nullable=False)
     reviewText = db.Column(db.Text, nullable=False)
     stars = db.Column(db.Integer, nullable=False)
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)

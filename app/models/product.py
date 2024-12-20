@@ -19,7 +19,7 @@ class Product(db.Model):
     #carts = db.relationship('Cart', back_populates='product')
     carts = db.relationship('Cart', back_populates='product', cascade="all, delete-orphan")
     favorites = db.relationship("Favorite", back_populates="product")
-
+    reviews = db.relationship("Review", back_populates="product", cascade='all, delete-orphan')
 
 class ProductImage(db.Model):
     __tablename__ = 'product_images'

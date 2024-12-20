@@ -24,6 +24,6 @@ def undo_favorites():
     if environment == 'production':
         db.session.execute(f"TRUNCATE table {SCHEMA}.favorites RESTART IDENTITY CASCADE;")
     else: 
-        db.session.execute(text("DELETE FROM users"))
+        db.session.execute(text("DELETE FROM favorites"))
 
     db.session.commit()
