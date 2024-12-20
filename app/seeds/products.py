@@ -25,21 +25,21 @@ def seed_products():
         previewImage="https://example.com/arc-reactor.jpg"
     )
     agamotto = Product(
-        owner_id=4,
+        owner_id=1,
         name="Eye of Agamotto",
         description="A mystical relic that contains the Time Stone, wielded by Doctor Strange.",
         price=2000,
         previewImage="https://example.com/eye-of-agamotto.jpg"
     )
     gauntlet = Product(
-        owner_id=5,
+        owner_id=2,
         name="Infinity Gauntlet",
         description="The gauntlet forged to wield all six Infinity Stones, granting ultimate power.",
         price=5000,
         previewImage="https://example.com/infinity-gauntlet.jpg"
     )
     vibranium_suit = Product(
-        owner_id=6,
+        owner_id=3,
         name="Black Panther's Vibranium Suit",
         description="A vibranium-infused suit, offering protection and enhanced abilities.",
         price=3500,
