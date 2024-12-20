@@ -3,6 +3,7 @@ from .users import seed_users, undo_users
 from .products import seed_products, undo_products
 from .carts import seed_carts, undo_carts
 from .favorites import seed_favorites, undo_favorites
+from .reviews import seed_reviews, undo_reviews
 
 from app.models.db import environment 
 
@@ -23,10 +24,12 @@ def seed():
         undo_products()
         undo_carts()
         undo_favorites()
+        undo_reviews()
     seed_users()
     seed_products()
     seed_carts()
     seed_favorites()
+    seed_reviews()
     # Add other seed functions here
 
 
@@ -36,4 +39,6 @@ def undo():
     undo_users()
     undo_carts()
     undo_favorites()
+    undo_products()
+    undo_reviews
     # Add other undo functions here

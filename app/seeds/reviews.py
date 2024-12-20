@@ -1,5 +1,5 @@
-from app.models import db, Review
-from datetime import datetime
+from app.models import db, Review, SCHEMA, environment
+from sqlalchemy.sql import text
 
 def seed_reviews():
     reviews = [
@@ -23,11 +23,15 @@ def seed_reviews():
         )
     ]
 
-    for review in reviews:
-        db.session.add(review)
+    db.session.bulk_save_objects(reviews)
 
     db.session.commit()
+    print("Reviews seeded!") 
 
 def undo_reviews():
-    db.session.execute('TRUNCATE reviews RESTART IDENTITY CASCADE;')
+    if environment == 'production':
+        db.session.execute(f"TRUNCATE table {SCHEMA}.reviews RESTART IDENTITY CASCADE;")
+    else: 
+        db.session.execute(text("DELETE FROM reviews"))
+
     db.session.commit()
