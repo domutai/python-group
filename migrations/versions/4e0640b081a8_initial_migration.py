@@ -1,8 +1,9 @@
-"""Create all tables
+"""Initial migration
 
-Revision ID: 1648b705639e
+
+Revision ID: 4e0640b081a8
 Revises: 
-Create Date: 2024-12-20 10:42:53.309775
+Create Date: 2024-12-20 12:23:59.247177
 
 """
 from alembic import op
@@ -10,7 +11,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1648b705639e'
+revision = '4e0640b081a8'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,10 +25,11 @@ def upgrade():
     sa.Column('last_name', sa.String(length=50), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.UniqueConstraint('email'),
+    schema='python_project'
     )
     op.create_table('products',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -36,37 +38,41 @@ def upgrade():
     sa.Column('description', sa.Text(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('previewImage', sa.Text(), nullable=True),
-    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['owner_id'], ['python_project.users.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('carts',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('userId', sa.Integer(), nullable=False),
     sa.Column('productId', sa.Integer(), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['productId'], ['python_project.products.id'], ),
+    sa.ForeignKeyConstraint(['userId'], ['python_project.users.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('favorites',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('userId', sa.Integer(), nullable=False),
     sa.Column('productId', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['productId'], ['python_project.products.id'], ),
+    sa.ForeignKeyConstraint(['userId'], ['python_project.users.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('product_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('product_id', sa.Integer(), nullable=False),
     sa.Column('imageURL', sa.Text(), nullable=False),
     sa.Column('isPreview', sa.Boolean(), nullable=True),
-    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.ForeignKeyConstraint(['product_id'], ['python_project.products.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -76,19 +82,20 @@ def upgrade():
     sa.Column('stars', sa.Integer(), nullable=False),
     sa.Column('createdAt', sa.DateTime(), nullable=False),
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['productid'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['userID'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['productid'], ['python_project.products.id'], ),
+    sa.ForeignKeyConstraint(['userID'], ['python_project.users.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_table('reviews')
-    op.drop_table('product_images')
-    op.drop_table('favorites')
-    op.drop_table('carts')
-    op.drop_table('products')
-    op.drop_table('users')
+    op.drop_table('reviews', schema='python_project')
+    op.drop_table('product_images', schema='python_project')
+    op.drop_table('favorites', schema='python_project')
+    op.drop_table('carts', schema='python_project')
+    op.drop_table('products', schema='python_project')
+    op.drop_table('users', schema='python_project')
     # ### end Alembic commands ###

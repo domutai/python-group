@@ -37,8 +37,8 @@ def seed():
 @seed_commands.command('undo')
 def undo():
     undo_users()
+    undo_products()
     undo_carts()
     undo_favorites()
-    undo_products()
     undo_reviews
     # Add other undo functions here
