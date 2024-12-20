@@ -34,4 +34,4 @@ def undo_reviews():
     else: 
         db.session.execute(text("DELETE FROM reviews"))
 
-    db.session.commit()
+    db.session.commit() 
