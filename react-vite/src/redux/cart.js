@@ -7,12 +7,19 @@ const getCart = (carts) => ({
 
 export const thunkGetCart = () => async (dispatch) => {
   try {
-    const response = await fetch("/api/cart");
+    const response = await fetch("/api/cart/", {
+      method: "GET",
+      // headers: {
+      //   "X-CSRF-TOKEN":
+      //     "IjM0NTcyOWVjYzJiMmU4NDU1YmU2ZWE1ZTgwMWQwZjM3YTNmMGJlNTQi.Z3MYbQ.A5-0jhNRzCjutA416aO0qw3h-H8",
+      // },
+    });
     if (response.ok) {
       const data = await response.json();
       dispatch(getCart(data));
     } else {
       const error = await response.json();
+      console.log("HEEEY", error);
       throw new Error(error.message || "Failed to fetch cart");
     }
   } catch (error) {

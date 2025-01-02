@@ -6,8 +6,8 @@ import { thunkGetCart } from "../../redux/cart";
 function CartPage() {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
-  const cart = useSelector((state) => state.cart.cart);
+  const sessionUser = useSelector((state) => state.session?.user);
+  const cart = useSelector((state) => state.cart?.cart?.cart);
   // const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -21,10 +21,12 @@ function CartPage() {
   return (
     <>
       <h1>Shopping Cart</h1>
-      {cart.length > 0 ? (
+      {cart?.length > 0 ? (
         <ul>
-          {cart.map((item) => (
-            <li key={item.id}>{item.name}</li>
+          {cart?.map((item) => (
+            <li key={item.id}>
+              {item.productId} {item.quantity}
+            </li>
           ))}
         </ul>
       ) : (
