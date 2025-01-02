@@ -8,7 +8,8 @@ cart_routes = Blueprint('cart',__name__)
 
 @cart_routes.route('/')
 @login_required
-def index():
+def get_cart():
+    print("current user:", current_user)
     cart = Cart.query.filter(Cart.userId == current_user.id).all()
     if not cart:
         return jsonify({'message': 'Shopping cart is empty.'}), 400
