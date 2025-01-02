@@ -1,7 +1,7 @@
 
 
 const LOAD_PRODUCTS ='products/loadProducts';
-const PRODUCT_DETAILS = 'products/productDetails';
+// const PRODUCT_DETAILS = 'products/productDetails';
 const ADD_PRODUCT = 'products/addProduct';
 const UPDATE_PRODUCT = 'products/updateProduct';
 const DELETE_PRODUCT = 'products/deleteProduct';
@@ -13,12 +13,12 @@ const loadProducts = (products) => {
   }
 }
 
-const productDetails = (product) => {
-  return {
-    type: PRODUCT_DETAILS,
-    product
-  }
-}
+// const productDetails = (product) => {
+//   return {
+//     type: PRODUCT_DETAILS,
+//     product
+//   }
+// }
 
 const addProduct = (product) => {
   return {
@@ -51,16 +51,41 @@ export const loadAllProducts = () => async (dispatch) => {
   }
 }
 
-export const productDetailsThunk = (id) => async (dispatch) => {
-  const response = await fetch(`/api/products/${id}`);
-
+export const createProduct = (payload) => async (dispatch) => {
+  const response = await fetch(`/api/products`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  });
   if(response.ok) {
-    const details = await response.json();
-    dispatch(productDetails(details))
-    return details;
+    const productData = await response.json();
+    dispatch(addProduct(productData))
+    return productData
   }
 }
 
+export const updateProductThunk = (id, payload) => async (dispatch) => {
+  const response = await fetch(`/api/products/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  });
+  if(response.ok) {
+    const productDetails = await response.json();
+    dispatch(updateProduct(productDetails));
+    return productDetails
+  }
+}
+
+export const deleteProductThunk = (id) => async (dispatch) => {
+  const response = await fetch(`/api/products/${id}`, {
+    method: 'DELETE'
+  })
+
+  if(response.ok) {
+    dispatch(deleteProduct(id))
+  }
+}
 
 const initialState = {};
 
@@ -74,10 +99,19 @@ const productReducer = (state = initialState, action) => {
       action.products.forEach((product) => {newState[product.id] = product});
       return newState
     }
-    case PRODUCT_DETAILS: {
-      const newState = { ...state };
-      newState[action.product.id] = action.product;
+    case ADD_PRODUCT: {
+      const newState = { ...state, [action.product.id]: action.product };
       return newState;
+    }
+    case UPDATE_PRODUCT: {
+      const newState = { ...state }
+      newState[action.product.id] = action.product
+      return newState;
+    }
+    case DELETE_PRODUCT: {
+      const newState = { ...state }
+      delete newState[action.id]
+      return newState
     }
     default:
       return state
