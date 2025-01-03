@@ -46,23 +46,27 @@ def add_to_cart():
 
     return jsonify({"message": "Item added to cart successfully"}), 201
 
-@cart_routes.route('/<int:cart_id>', methods=['PUT'])
+@cart_routes.route('/<int:cart_id>/', methods=['PUT'])
 @login_required
 def update_cart(cart_id):
+    print(f"Received PUT request for cart_id: {cart_id}")
     cart_item = Cart.query.get(cart_id)
 
     if not cart_item:
-        return jsonify({"message": "Item not found"}),404
+        print("Cart item not found")
+        return jsonify({"message": "Item not found"}), 404
 
     data = request.get_json()
-    new_quantity =data.get("quantity")
+    print(f"Request data: {data}")
+    new_quantity = int(data.get("quantity"))
 
     if new_quantity <= 0:
+        print("Invalid quantityyyyyyyyyyyyyyyyyyyyyy")
         return jsonify({"message": "Quantity must be greater than 0"}), 400
-    
-    cart_item.quantity = new_quantity
 
+    cart_item.quantity = new_quantity
     db.session.commit()
+    print("Cart item updated successfully")
 
     return jsonify({"item": cart_item.to_dict()}), 200
     
@@ -82,7 +86,7 @@ def delete_cart(cart_id):
     return jsonify({"message": "Item removed from cart"}), 200
 
 
-@cart_routes.route('/checkout', methods=["POST"])
+@cart_routes.route('/checkout/', methods=["POST"])
 @login_required
 def checkout():
     cart = Cart.query.filter(Cart.userId == current_user.id).all()

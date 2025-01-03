@@ -1,13 +1,15 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from app.models import db, Product, ProductImage, Favorite
+from sqlalchemy.orm import joinedload
 
 product_routes = Blueprint("products", __name__, url_prefix="/api/products")
 
 # 1.1 GET /api/products – View All Products
 @product_routes.route("", methods=["GET"])
 def get_all_products():
-    products = Product.query.all()
+    products = Product.query.options(joinedload(Product.owner)).all()
+    
     return jsonify([
         {
             "id": product.id,
@@ -15,7 +17,12 @@ def get_all_products():
             "name": product.name,
             "description": product.description,
             "price": product.price,
-            "previewImage": product.previewImage
+            "previewImage": product.previewImage,
+            "owner": {
+                "id": product.owner.id,
+                "first_name": product.owner.first_name,
+                "email": product.owner.email
+            } if product.owner else None
         } for product in products
     ]), 200
 
