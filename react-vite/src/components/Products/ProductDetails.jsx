@@ -4,7 +4,9 @@ import { useEffect } from 'react';
 import { loadAllProducts } from '../../redux/product';
 import { loadAllReviews } from '../../redux/review';
 import { ImStarFull } from 'react-icons/im';
-import Reviews from './Reviews';
+import Reviews from '../Reviews/Reviews';
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import ReviewFormModal from '../Reviews/ReviewFormModal';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -45,6 +47,12 @@ function ProductDetails() {
             {numOfReviews()} 
             {reviews && `${Number(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(2)}`}
             <ImStarFull />
+          </div>
+          <div>
+            <OpenModalButton
+            buttonText='Post Your Review'
+            modalComponent={<ReviewFormModal id={id} />}
+            />
           </div>
           <div>
             <Reviews id={id} />

@@ -41,8 +41,8 @@ export const loadAllProducts = () => async (dispatch) => {
   }
 }
 
-export const createProduct = (payload) => async (dispatch) => {
-  const response = await fetch(`/api/products`, {
+export const createProduct = (id, payload) => async (dispatch) => {
+  const response = await fetch(`/api/products/${id}/reviews`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(payload)
