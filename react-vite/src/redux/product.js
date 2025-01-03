@@ -1,7 +1,4 @@
-
-
 const LOAD_PRODUCTS ='products/loadProducts';
-// const PRODUCT_DETAILS = 'products/productDetails';
 const ADD_PRODUCT = 'products/addProduct';
 const UPDATE_PRODUCT = 'products/updateProduct';
 const DELETE_PRODUCT = 'products/deleteProduct';
@@ -12,13 +9,6 @@ const loadProducts = (products) => {
     products
   }
 }
-
-// const productDetails = (product) => {
-//   return {
-//     type: PRODUCT_DETAILS,
-//     product
-//   }
-// }
 
 const addProduct = (product) => {
   return {

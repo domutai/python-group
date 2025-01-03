@@ -18,6 +18,13 @@ const addReview = (review) => {
   }
 }
 
+const updateReview = (review) => {
+  return {
+    type: UPDATE_REVIEW,
+    review
+  } 
+}
+
 const deleteReview = (id, productId) => {
   return {
     type: DELETE_REVIEW,
@@ -33,6 +40,9 @@ export const loadAllReviews = (id) => async (dispatch) => {
     dispatch(loadReviews(data))
     return data
   }
+  else {
+    return {'message': 'Not working'}
+  }
 }
 
 export const createReview = (id, payload) => async (dispatch) => {
@@ -44,6 +54,19 @@ export const createReview = (id, payload) => async (dispatch) => {
   const review = await response.json();
   dispatch(addReview(review))
   return review
+}
+
+export const updateReviewThunk = (id, payload) => async (dispatch) => {
+  const response = await fetch(`/api/reviews/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  })
+  if(response.ok) {
+    const reviewDetails = await response.json()
+    dispatch(updateReview(reviewDetails))
+    return reviewDetails
+  }
 }
 
 export const deleteReviewThunk = (id, productId) => async (dispatch) => {
@@ -60,6 +83,9 @@ const initialState = {}
 
 const reviewsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_REVIEWS: {
+      return { ...state, reviews: action.reviews };
+    }
     default:
       return state
   }
