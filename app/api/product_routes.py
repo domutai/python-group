@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from app.models import db, Product, ProductImage, Favorite
+from app.models import db, Product, ProductImage, Favorite, Review, User
+from sqlalchemy.sql import func
 from sqlalchemy.orm import joinedload
 
 product_routes = Blueprint("products", __name__, url_prefix="/api/products")
