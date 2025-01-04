@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import LoginFormPage from "../components/LoginFormPage";
 import SignupFormPage from "../components/SignupFormPage";
 import CartPage from "../components/Cart";
+import CreateProductPage from "../components/Products/CreateProductPage/CreateProductPage";
 import Layout from "./Layout";
 import ProductDetails from "../components/Products/ProductDetails";
 
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: "cart",
         element: <CartPage />,
+      },
+      {
+        path: "products/new",
+        element: <CreateProductPage />,
       },
     ],
   },
