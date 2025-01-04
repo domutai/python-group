@@ -15,6 +15,7 @@ class Product(db.Model):
     createdAt = db.Column(db.DateTime, server_default=db.func.now())
     updatedAt = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
+    owner = db.relationship("User", backref="products")
     images = db.relationship("ProductImage", back_populates="product", cascade="all, delete-orphan")
     #carts = db.relationship('Cart', back_populates='product')
     carts = db.relationship('Cart', back_populates='product', cascade="all, delete-orphan")

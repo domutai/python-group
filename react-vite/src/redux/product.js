@@ -1,7 +1,4 @@
-
-
 const LOAD_PRODUCTS ='products/loadProducts';
-// const PRODUCT_DETAILS = 'products/productDetails';
 const ADD_PRODUCT = 'products/addProduct';
 const UPDATE_PRODUCT = 'products/updateProduct';
 const DELETE_PRODUCT = 'products/deleteProduct';
@@ -12,13 +9,6 @@ const loadProducts = (products) => {
     products
   }
 }
-
-// const productDetails = (product) => {
-//   return {
-//     type: PRODUCT_DETAILS,
-//     product
-//   }
-// }
 
 const addProduct = (product) => {
   return {
@@ -51,8 +41,8 @@ export const loadAllProducts = () => async (dispatch) => {
   }
 }
 
-export const createProduct = (payload) => async (dispatch) => {
-  const response = await fetch(`/api/products`, {
+export const createProduct = (id, payload) => async (dispatch) => {
+  const response = await fetch(`/api/products/${id}/reviews`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
     body: JSON.stringify(payload)

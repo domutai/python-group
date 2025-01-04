@@ -9,7 +9,6 @@ product_routes = Blueprint("products", __name__, url_prefix="/api/products")
 @product_routes.route("", methods=["GET"])
 def get_all_products():
     products = Product.query.options(joinedload(Product.owner)).all()
-    
     return jsonify([
         {
             "id": product.id,
@@ -25,6 +24,18 @@ def get_all_products():
             } if product.owner else None
         } for product in products
     ]), 200
+# def get_all_products():
+#     products = Product.query.all()
+#     return jsonify([
+#         {
+#             "id": product.id,
+#             "owner_id": product.owner_id,
+#             "name": product.name,
+#             "description": product.description,
+#             "price": product.price,
+#             "previewImage": product.previewImage
+#         } for product in products
+#     ]), 200
 
 # 1.2 POST /api/products – Create a New Product
 @product_routes.route("", methods=["POST"])

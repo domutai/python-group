@@ -7,11 +7,13 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import productReducer from "./product";
+import reviewsReducer from "./review";
 import cartReducer from "./cart";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   product: productReducer,
+  reviews: reviewsReducer,
   cart: cartReducer,
 });
 
