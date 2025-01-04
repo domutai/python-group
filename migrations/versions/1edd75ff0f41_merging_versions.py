@@ -1,8 +1,8 @@
-"""empty message
+"""merging versions
 
-Revision ID: 41025e36b3ba
-Revises: 
-Create Date: 2024-12-30 16:30:07.658373
+Revision ID: 1edd75ff0f41
+Revises: 41025e36b3ba, d92c225f1554
+Create Date: 2025-01-04 13:07:18.032967
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '41025e36b3ba'
-down_revision = ('d92c225f1554')
+revision = '1edd75ff0f41'
+down_revision = ('41025e36b3ba')
 branch_labels = None
 depends_on = None
 
@@ -27,7 +27,8 @@ def upgrade():
     sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.UniqueConstraint('email'),
+    if_not_exists=True
     )
     op.create_table('products',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -39,7 +40,8 @@ def upgrade():
     sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    if_not_exists=True
     )
     op.create_table('carts',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -48,7 +50,8 @@ def upgrade():
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
     sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    if_not_exists=True
     )
     op.create_table('favorites',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -56,7 +59,8 @@ def upgrade():
     sa.Column('productId', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['productId'], ['products.id'], ),
     sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    if_not_exists=True
     )
     op.create_table('product_images',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -66,7 +70,8 @@ def upgrade():
     sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    if_not_exists=True
     )
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -78,7 +83,8 @@ def upgrade():
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['productid'], ['products.id'], ),
     sa.ForeignKeyConstraint(['userID'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    if_not_exists=True
     )
     # ### end Alembic commands ###
 
