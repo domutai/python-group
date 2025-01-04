@@ -4,10 +4,11 @@ const ADD_REVIEW = 'reviews/addReview';
 const UPDATE_REVIEW = 'reviews/updateReview';
 const DELETE_REVIEW = 'reviews/deleteReview';
 
-const loadReviews = (reviews) => {
+const loadReviews = (payload) => {
   return {
     type: LOAD_REVIEWS,
-    reviews
+    reviews: payload.reviews,
+    productId: payload.productId
   }
 }
 
@@ -37,7 +38,7 @@ export const loadAllReviews = (id) => async (dispatch) => {
 
   if(response.ok) {
     const data = await response.json()
-    dispatch(loadReviews(data))
+    dispatch(loadReviews({ reviews: data, productId: id}))
     return data
   }
   else {
@@ -93,22 +94,33 @@ const initialState = {}
 const reviewsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_REVIEWS: {
-      return { ...state, reviews: action.reviews };
+      const newState = { ...state }
+      newState[action.productId] = action.reviews
+      return newState
     }
     case ADD_REVIEW: {
       const newState = { ...state };
-      // let reviews = newState[action.review.productId].slice();
-      let reviews = newState[action.review.productId] || [];
-        // reviews = reviews || [];
+      let reviews = newState[action.review.productId]?.slice();
+        reviews = reviews || [];
         reviews.push(action.review);
         newState[action.review.productId] = reviews
       return newState;
     }
+    case UPDATE_REVIEW: {
+      const newState = { ...state }
+      const newReviews = newState[action.review.productId].map(r => {
+        if(r.id === action.review.id) {
+          return action.review
+        }
+        return r
+      })
+      newState[action.review.productId] = newReviews
+      return newState
+    }
     case DELETE_REVIEW: {
       const newState = { ...state }
       if(newState[action.review.productId]) {
-        const newReviews = newState[action.review.productId].filter(r => r.id !== action.review.id)
-        newState[action.review.productId] = newReviews
+        newState[action.review.productId] = newState[action.review.productId].filter(review => review.id !== action.review.id)
       }
         return newState
     }

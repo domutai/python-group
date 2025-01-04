@@ -6,10 +6,9 @@ import DeleteReview from "./DeleteReviewModal";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 
 
-function Reviews({ id }) {
+function Reviews({ reviews, id }) {
   const dispatch = useDispatch();
   const sessionUser = useSelector(state => state.session.user);
-  const reviews = useSelector((state) => state.reviews.reviews)
   const products = useSelector((state) => state.product)
   const users = Object.values(products).map((product) => product.owner);
 
@@ -41,7 +40,7 @@ function Reviews({ id }) {
             <p>Posted by {findReviewerName(review.userID)}</p>
             <p>{formatDate(review.createdAt)}</p>
             {sessionUser && sessionUser.id === review.userID ? (
-              <>
+              <>  
                 <OpenModalButton
                 className='user-review-modal-button'
                 buttonText='Update'

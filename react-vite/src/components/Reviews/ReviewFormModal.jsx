@@ -36,7 +36,8 @@ function ReviewFormModal({ id }) {
 
     const reviewPayload = {
       reviewText: review,
-      stars: starRating
+      stars: starRating, 
+      productId: id
     }
 
     dispatch(createReview(id, reviewPayload));

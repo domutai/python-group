@@ -12,7 +12,8 @@ function ProductDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product[id])
-  const reviews = useSelector((state) => state.reviews.reviews)
+  const reviews = useSelector((state) => state.reviews[id])
+  console.log('Reviews retrieved from state', reviews)
 
   const numOfReviews = () => {
     if(reviews?.length === 1) {
@@ -55,7 +56,7 @@ function ProductDetails() {
             />
           </div>
           <div>
-            <Reviews id={id} />
+            <Reviews reviews={reviews} id={id} />
           </div>
         </div>
       )}
