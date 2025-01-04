@@ -23,10 +23,18 @@ def seed_users():
 # incrementing primary key, CASCADE deletes any dependent entities.  With
 # sqlite3 in development you need to instead use DELETE to remove all data and
 # it will reset the primary keys for you as well.
+# def undo_users():
+#     if environment == "production":
+#         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+#     else:
+#         db.session.execute(text("DELETE FROM users"))
+        
+#     db.session.commit()
+
 def undo_users():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM users"))
-        
+        db.session.execute("DELETE FROM users;")  # Deletes all rows in the table
+        db.session.execute("DELETE FROM sqlite_sequence WHERE name='users';")  # Resets the primary key sequence
     db.session.commit()
