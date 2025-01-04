@@ -1,7 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import { loadAllProducts } from '../../redux/product';
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { loadAllProducts } from "../../redux/product";
+import { thunkAddToCart } from "../../redux/cart";
 import { loadAllReviews } from '../../redux/review';
 import { ImStarFull } from 'react-icons/im';
 import Reviews from '../Reviews/Reviews';
@@ -31,10 +32,10 @@ function ProductDetails() {
   return (
     <div>
       {product && (
-        <div> 
+        <div>
           <h1>{product.name}</h1>
           <div>
-            <img src={product.previewImage} alt={product.name}/>
+            <img src={product.previewImage} alt={product.name} />
           </div>
           <div>
             <p>{product.description}</p>
@@ -60,7 +61,7 @@ function ProductDetails() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default ProductDetails;

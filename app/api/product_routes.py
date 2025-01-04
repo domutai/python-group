@@ -9,7 +9,6 @@ product_routes = Blueprint("products", __name__, url_prefix="/api/products")
 @product_routes.route("", methods=["GET"])
 def get_all_products():
     products = Product.query.options(joinedload(Product.owner)).all()
-
     return jsonify([
         {
             "id": product.id,
