@@ -13,7 +13,6 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product[id])
   const reviews = useSelector((state) => state.reviews[id])
-  console.log('Reviews retrieved from state', reviews)
 
   const numOfReviews = () => {
     if(reviews?.length === 1) {

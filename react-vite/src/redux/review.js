@@ -26,10 +26,10 @@ const updateReview = (review) => {
   } 
 }
 
-const deleteReview = (id, productId) => {
+const deleteReview = (id) => {
   return {
     type: DELETE_REVIEW,
-    review: {id, productId}
+    id
   }
 }
 
@@ -79,13 +79,13 @@ export const updateReviewThunk = (id, payload) => async (dispatch) => {
   }
 }
 
-export const deleteReviewThunk = (id, productId) => async (dispatch) => {
+export const deleteReviewThunk = (id) => async (dispatch) => {
   const response = await fetch(`/api/reviews/${id}`, {
     method: 'DELETE'
   })
 
   if(response.ok) {
-    dispatch(deleteReview(id, productId))
+    dispatch(deleteReview(id))
   }
 }
 
@@ -100,29 +100,30 @@ const reviewsReducer = (state = initialState, action) => {
     }
     case ADD_REVIEW: {
       const newState = { ...state };
-      let reviews = newState[action.review.productId]?.slice();
-        reviews = reviews || [];
-        reviews.push(action.review);
-        newState[action.review.productId] = reviews
-      return newState;
+      const newReview = action.review;
+      if(!newState[newReview.productid]) {
+        newState[newReview.productid] = []
+      }
+      newState[newReview.productid] = [...newState[newReview.productid], newReview];
+      return newState
     }
     case UPDATE_REVIEW: {
       const newState = { ...state }
-      const newReviews = newState[action.review.productId].map(r => {
+      const newReviews = newState[action.review.productid].map(r => {
         if(r.id === action.review.id) {
           return action.review
         }
         return r
       })
-      newState[action.review.productId] = newReviews
+      newState[action.review.productid] = newReviews
       return newState
     }
     case DELETE_REVIEW: {
       const newState = { ...state }
-      if(newState[action.review.productId]) {
-        newState[action.review.productId] = newState[action.review.productId].filter(review => review.id !== action.review.id)
-      }
-        return newState
+      // newState[action.id] = newState[action.id].filter(review => review.id !== action.id)
+      const productId = Object.keys(newState).find((id) => newState[id].some((review) => review.id === action.id))
+      newState[productId] = newState[productId].filter((review) => review.id !== action.id)
+      return newState
     }
     default:
       return state

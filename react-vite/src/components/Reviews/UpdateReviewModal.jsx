@@ -34,8 +34,9 @@ function UpdateReview({ currReview }) {
     e.preventDefault();
 
     const reviewPayload = {
-      review,
-      stars: starRating
+      reviewText: review,
+      stars: starRating, 
+      // productId: id
     }
 
     dispatch(updateReviewThunk(currReview.id, reviewPayload));

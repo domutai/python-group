@@ -6,8 +6,8 @@ function DeleteReview({ review }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
-  const handleSubmit = async (id, productId) => {
-    await dispatch(deleteReviewThunk(id, productId))
+  const handleSubmit = async (id) => {
+    await dispatch(deleteReviewThunk(id))
     .then(closeModal)
   }
 
@@ -16,7 +16,7 @@ function DeleteReview({ review }) {
       <h1>Confirm Delete</h1>
       <p>Are you sure you want to delete this review?</p>
       <button className='Delete-yes-button Modal-delete-button' 
-      onClick={() => handleSubmit(review.id, review.productId)}>Yes (Delete Review)
+      onClick={() => handleSubmit(review.id)}>Yes (Delete Review)
       </button>
       <button className='Delete-no-button Modal-delete-button' 
       onClick={closeModal}>No (Keep Review)
