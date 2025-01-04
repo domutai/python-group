@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, /*Navigate*/ } from "react-router-dom";
 import {
   thunkCheckout,
   thunkDeleteCart,
@@ -12,10 +12,10 @@ import { loadAllProducts } from "../../redux/product";
 
 function CartPage() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session?.user);
+  //const sessionUser = useSelector((state) => state.session?.user);
   const cart = useSelector((state) => state.cart?.cart);
   const products = useSelector((state) => state.product);
-  const [errors, setErrors] = useState({});
+  //const [errors, setErrors] = useState({});
   const [quantities, setQuantities] = useState({});
 
   useEffect(() => {
@@ -33,9 +33,9 @@ function CartPage() {
     }
   }, [cart]);
 
-  if (!sessionUser) {
-    return <Navigate to="/login" />;
-  }
+  // if (!sessionUser) {
+  //   return <Navigate to="/login" />;
+  // }
 
   const shipping = 3.99;
   const taxRate = 0.08;

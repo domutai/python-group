@@ -1,29 +1,31 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from app.models import db, Product, ProductImage, Favorite
+from app.models import db, Product, ProductImage, Favorite, Review, User
+from sqlalchemy.sql import func
 from sqlalchemy.orm import joinedload
 
 product_routes = Blueprint("products", __name__, url_prefix="/api/products")
 
 # 1.1 GET /api/products – View All Products
-@product_routes.route("", methods=["GET"])
-def get_all_products():
-    products = Product.query.options(joinedload(Product.owner)).all()
-    return jsonify([
-        {
-            "id": product.id,
-            "owner_id": product.owner_id,
-            "name": product.name,
-            "description": product.description,
-            "price": product.price,
-            "previewImage": product.previewImage,
-            "owner": {
-                "id": product.owner.id,
-                "first_name": product.owner.first_name,
-                "email": product.owner.email
-            } if product.owner else None
-        } for product in products
-    ]), 200
+# @product_routes.route("", methods=["GET"])
+# def get_all_products():
+#     products = Product.query.options(joinedload(Product.owner)).all()
+#     return jsonify([
+#         {
+#             "id": product.id,
+#             "owner_id": product.owner_id,
+#             "name": product.name,
+#             "description": product.description,
+#             "price": product.price,
+#             "previewImage": product.previewImage,
+#             "owner": {
+#                 "id": product.owner.id,
+#                 "first_name": product.owner.first_name,
+#                 "email": product.owner.email
+#             } if product.owner else None
+#         } for product in products
+#     ]), 200
+
 # def get_all_products():
 #     products = Product.query.all()
 #     return jsonify([
@@ -36,6 +38,32 @@ def get_all_products():
 #             "previewImage": product.previewImage
 #         } for product in products
 #     ]), 200
+
+# 1.1 GET /api/products – View All Products with Ratings and Names
+@product_routes.route("", methods=["GET"])
+def get_all_products():
+    products = db.session.query(
+        Product,
+        User.first_name.label("seller_first_name"),
+        User.last_name.label("seller_last_name"),
+        func.coalesce(func.avg(Review.stars), 0).label("average_rating"),
+    ).outerjoin(User, User.id == Product.owner_id
+    ).outerjoin(Review, Review.productid == Product.id
+    ).group_by(Product.id, User.id).all()
+
+    return jsonify([
+        {
+            "id": product.Product.id,
+            "owner_id": product.Product.owner_id,
+            "name": product.Product.name,
+            "description": product.Product.description,
+            "price": product.Product.price,
+            "previewImage": product.Product.previewImage,
+            "rating": product.average_rating,  # Average rating from reviews
+            "seller_name": f"{product.seller_first_name} {product.seller_last_name}".strip(),
+        }
+        for product in products
+    ]), 200
 
 # 1.2 POST /api/products – Create a New Product
 @product_routes.route("", methods=["POST"])

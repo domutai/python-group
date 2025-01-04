@@ -6,99 +6,94 @@ import "./SignupForm.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      return setErrors({
+      setErrors({
         confirmPassword:
           "Confirm Password field must be the same as the Password field",
       });
+      return;
     }
 
     const serverResponse = await dispatch(
       thunkSignup({
         email,
-        first_name: firstName,
-        last_name: lastName,
+        username,
         password,
       })
     );
 
     if (serverResponse) {
-      setErrors(serverResponse);
+      setErrors(serverResponse); 
     } else {
-      closeModal();
+      closeModal(); 
     }
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
-      {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
+    <div className="signup-modal">
+      <h2>Sign Up</h2>
+      <form onSubmit={handleSubmit} className="signup-form">
+        <div className="form-group">
+          <label>Email address</label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          First Name
+          {errors.email && <p className="error-text">{errors.email}</p>}
+        </div>
+        <div className="form-group">
+          <label>Username</label>
           <input
             type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        {errors.first_name && <p>{errors.first_name}</p>}
-        <label>
-          Last Name
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </label>
-        {errors.last_name && <p>{errors.last_name}</p>}
-        <label>
-          Password
+          {errors.username && <p className="error-text">{errors.username}</p>}
+        </div>
+        <div className="form-group">
+          <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
+          {errors.password && <p className="error-text">{errors.password}</p>}
+        </div>
+        <div className="form-group">
+          <label>Confirm Password</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+          {errors.confirmPassword && (
+            <p className="error-text">{errors.confirmPassword}</p>
+          )}
+        </div>
+        <div className="form-buttons">
+          <button type="submit" className="signup-button">
+            Register
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
 
 export default SignupFormModal;
+
