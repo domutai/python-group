@@ -4,7 +4,7 @@ import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   const [isFavorited, setIsFavorited] = useState(false);
-
+  console.log("HEEEEEY", product);
   const handleFavoriteClick = () => {
     setIsFavorited((prev) => !prev);
   };
@@ -42,4 +42,3 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
-
