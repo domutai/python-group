@@ -43,9 +43,7 @@ def index():
 @favorite_routes.route('/', methods=["POST"])
 @login_required
 def add_to_favorites():
-
     data = request.get_json()
-
     product_id = data.get('productId')
 
     product = db.session.query(Product).filter(Product.id == product_id).first()
@@ -54,22 +52,26 @@ def add_to_favorites():
         return jsonify({"message": "Product not found"}), 404
     
     existing_favorite_item = Favorite.query.filter_by(
-        userId = current_user.id,
-        productId = product_id
+        userId=current_user.id,
+        productId=product_id
     ).first()
 
     if existing_favorite_item:
-        return jsonify({"message":"Product is already on Favorites"})
-    else: 
-        new_item= Favorite(
-            userId = current_user.id,
-            productId = product_id,
-        )
-        db.session.add(new_item)
-
+        return jsonify({"message": "Product is already on Favorites"})
+    
+    new_item = Favorite(
+        userId=current_user.id,
+        productId=product_id,
+    )
+    db.session.add(new_item)
     db.session.commit()
 
-    return jsonify({"message": "Item added to Favorites successfully"}), 201
+    return jsonify({
+        "id": new_item.id,
+        "userId": new_item.userId,
+        "productId": new_item.productId,
+        "message": "Item added to Favorites successfully"
+    }), 201
 
 
 @favorite_routes.route('/<int:favorite_id>', methods=["DELETE"])

@@ -2,26 +2,33 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaHeart, FaStar } from "react-icons/fa";
 import { addToFavorites, removeFromFavorites } from "../../redux/favorites";
+import { useModal } from "../../context/Modal";
+import LoginFormModal from "../LoginFormModal";
 import "./ProductCard.css";
 
 const PLACEHOLDER_IMAGE = "https://placehold.co/300x200/png?text=No+Image";
 
 const ProductCard = ({ product = {}, isFavorited = false, favoriteId = null }) => {
     const dispatch = useDispatch();
+    const { setModalContent } = useModal();
     const favorites = useSelector(state => state.favorites.favorites);
+    const sessionUser = useSelector(state => state.session.user);
     const [isLoading, setIsLoading] = useState(false);
     
     const existingFavorite = favorites.find(fav => fav.productId === product.id);
-    const isProductFavorited = isFavorited || Boolean(existingFavorite);
-    const currentFavoriteId = favoriteId || existingFavorite?.id;
+    const isProductFavorited = Boolean(existingFavorite);
+    const currentFavoriteId = existingFavorite?.id;
 
-
-    
     const handleFavoriteClick = async (e) => {
         e.preventDefault();
         e.stopPropagation();
         
-        if (isLoading) return; // Prevent multiple clicks while processing
+        if (!sessionUser) {
+            setModalContent(<LoginFormModal />);
+            return;
+        }
+        
+        if (isLoading) return;
         
         setIsLoading(true);
         try {
@@ -36,8 +43,6 @@ const ProductCard = ({ product = {}, isFavorited = false, favoriteId = null }) =
             setIsLoading(false);
         }
     };
-
-    if (!product) return null;
 
     return (
         <div className="product-card">
