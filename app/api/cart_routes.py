@@ -1,19 +1,40 @@
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
-from ..models import db, Cart
-
-
+from ..models import db, Cart, Product, User
 
 cart_routes = Blueprint('cart',__name__)
 
 @cart_routes.route('/')
 @login_required
 def get_cart():
-    print("current user:", current_user)
-    cart = Cart.query.filter(Cart.userId == current_user.id).all()
-    if not cart:
+    cart_items = Cart.query.filter(Cart.userId == current_user.id) \
+                          .join(Product) \
+                          .join(User, Product.owner_id == User.id) \
+                          .all()
+                          
+    if not cart_items:
         return jsonify({'message': 'Shopping cart is empty.'}), 400
-    return jsonify({'cart': [product.to_dict() for product in cart]}), 200
+        
+    return jsonify({
+        'cart': [{
+            'id': item.id,
+            'userId': item.userId,
+            'productId': item.productId,
+            'quantity': item.quantity,
+            'product': {
+                'id': item.product.id,
+                'name': item.product.name,
+                'price': item.product.price,
+                'description': item.product.description,
+                'previewImage': item.product.previewImage,
+                'owner': {
+                    'id': item.product.owner.id,
+                    'first_name': item.product.owner.first_name,
+                    'last_name': item.product.owner.last_name
+                }
+            }
+        } for item in cart_items]
+    }), 200
 
 @cart_routes.route('/', methods=["POST"])
 @login_required

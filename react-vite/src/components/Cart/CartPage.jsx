@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, /*Navigate*/ } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   thunkCheckout,
   thunkDeleteCart,
@@ -12,11 +12,10 @@ import { loadAllProducts } from "../../redux/product";
 
 function CartPage() {
   const dispatch = useDispatch();
-  //const sessionUser = useSelector((state) => state.session?.user);
   const cart = useSelector((state) => state.cart?.cart);
-  const products = useSelector((state) => state.product);
-  //const [errors, setErrors] = useState({});
+  const products = useSelector((state) => state.product); // Keep this
   const [quantities, setQuantities] = useState({});
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     dispatch(thunkGetCart()).catch((error) => setErrors(error));
@@ -32,10 +31,6 @@ function CartPage() {
       setQuantities(initialQuantities);
     }
   }, [cart]);
-
-  // if (!sessionUser) {
-  //   return <Navigate to="/login" />;
-  // }
 
   const shipping = 3.99;
   const taxRate = 0.08;
@@ -82,13 +77,13 @@ function CartPage() {
       </div>
       <div className="items-box">
         {cart?.map((item) => {
-          const product = products[item.productId];
+          const product = products[item.productId];  // Get product here
           return (
             <div className="cart-item" key={item.id}>
               <div className="cart-item-left">
-                <h4 className="seller-name">{product.owner.first_name}</h4>
+                <h4 className="seller-name">{product?.owner?.first_name || 'Seller'}</h4>
                 <img
-                  src={product.previewImage}
+                  src={product?.previewImage}
                   alt={product?.name || "Product"}
                   className="product-image"
                 />
@@ -124,10 +119,10 @@ function CartPage() {
               <div className="price">
                 <h3>
                   {formatCurrency(
-                    product.price * (quantities[item.id] || item.quantity)
+                    (product?.price || 0) * (quantities[item.id] || item.quantity)
                   )}
                 </h3>
-                <p>({formatCurrency(product.price)} each)</p>
+                <p>({formatCurrency(product?.price || 0)} each)</p>
               </div>
             </div>
           );
