@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import { createReview } from '../../redux/review';
 import { ImStarEmpty, ImStarFull } from "react-icons/im";
 import { useModal } from '../../context/Modal';
-import './Reviews.css';
-
+import './ReviewFormModal.css';
 
 function ReviewFormModal({ id }) {
   const dispatch = useDispatch();
@@ -49,7 +48,7 @@ function ReviewFormModal({ id }) {
   
   return (
     <div className='review-modal-container'>
-      <h1>Tell everyone what you think about the product?</h1>
+      <h2>Tell everyone what you think about the product?</h2>
         <form onSubmit={handleSubmit}>
           <textarea
             className='review-input'

@@ -46,6 +46,7 @@ def get_all_products():
         Product,
         User.first_name.label("seller_first_name"),
         User.last_name.label("seller_last_name"),
+        User.email.label("seller_email"),
         func.coalesce(func.avg(Review.stars), 0).label("average_rating"),
     ).outerjoin(User, User.id == Product.owner_id
     ).outerjoin(Review, Review.productid == Product.id
@@ -61,6 +62,11 @@ def get_all_products():
             "previewImage": product.Product.previewImage,
             "rating": product.average_rating,  # Average rating from reviews
             "seller_name": f"{product.seller_first_name} {product.seller_last_name}".strip(),
+            "owner" : {
+                "id": product.Product.owner_id,
+                "first_name": product.seller_first_name,
+                "email": product.seller_email
+            }
         }
         for product in products
     ]), 200

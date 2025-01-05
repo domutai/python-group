@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { updateReviewThunk } from '../../redux/review';
 import { ImStarEmpty, ImStarFull } from "react-icons/im";
 import { useModal } from '../../context/Modal';
-
+import './ReviewFormModal.css'
 
 function UpdateReview({ currReview }) {
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ function UpdateReview({ currReview }) {
   
   return (
     <div className='review-modal-container'>
-      <h1>Tell everyone what you think about the product?</h1>
+      <h2>Tell everyone what you think about the product?</h2>
         <form onSubmit={handleSubmit}>
           <textarea
             className='review-input'

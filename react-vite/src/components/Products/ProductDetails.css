@@ -1,0 +1,13 @@
+.product-details-container {
+  padding: 40px;
+}
+
+.price-button-container {
+  width: 100%;
+}
+
+.price-button-container > button {
+  background-color: black;
+  color: white;
+  border-radius: 3px;
+}

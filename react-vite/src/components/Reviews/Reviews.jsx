@@ -52,7 +52,7 @@ function Reviews({ reviews, id }) {
                 modalComponent={<DeleteReview review={review}/>}
                 />
               </>
-            ): (
+            ) : (
               <></>
             )}  
           </div>

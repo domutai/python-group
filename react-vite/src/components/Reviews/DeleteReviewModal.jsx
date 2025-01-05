@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { deleteReviewThunk } from '../../redux/review';
 import { useModal } from '../../context/Modal';
+import './DeleteReviewModal.css';
 
 function DeleteReview({ review }) {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function DeleteReview({ review }) {
 
   return (
     <div className='delete-modal-container'>
-      <h1>Confirm Delete</h1>
+      <h2>Confirm Delete</h2>
       <p>Are you sure you want to delete this review?</p>
       <button className='Delete-yes-button Modal-delete-button' 
       onClick={() => handleSubmit(review.id)}>Yes (Delete Review)
