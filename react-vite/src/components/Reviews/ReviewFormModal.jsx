@@ -49,7 +49,7 @@ function ReviewFormModal({ id }) {
   
   return (
     <div className='review-modal-container'>
-      <h1>Tell everyone what you think about the product?</h1>
+      <h2>Tell everyone what you think about the product?</h2>
         <form onSubmit={handleSubmit}>
           <textarea
             className='review-input'
