@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaHeart, FaStar } from "react-icons/fa";
 import { addToFavorites, removeFromFavorites } from "../../redux/favorites";
+import { thunkAddToCart } from "../../redux/cart"; 
 import "./ProductCard.css";
 
-<<<<<<< HEAD
 const PLACEHOLDER_IMAGE = "https://placehold.co/300x200/png?text=No+Image";
 
 const ProductCard = ({
@@ -15,6 +15,7 @@ const ProductCard = ({
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.favorites);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false); 
 
   const existingFavorite = favorites.find(
     (fav) => fav.productId === product.id
@@ -40,12 +41,21 @@ const ProductCard = ({
     } finally {
       setIsLoading(false);
     }
-=======
-const ProductCard = ({ product }) => {
-  const [isFavorited, setIsFavorited] = useState(false);
-  const handleFavoriteClick = () => {
-    setIsFavorited((prev) => !prev);
->>>>>>> 5d6a4bd (Finish related products on card Page)
+  };
+
+  // Add to Cart functionality
+  const handleAddToCart = async () => {
+    if (isAddingToCart) return; 
+    setIsAddingToCart(true);
+    try {
+      await dispatch(thunkAddToCart(product.id, 1)); 
+      alert(`${product.name} has been added to your cart!`);
+    } catch (error) {
+      console.error("Failed to add item to cart:", error.message);
+      alert("Failed to add item to cart. Please try again.");
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   if (!product) return null;
@@ -80,7 +90,13 @@ const ProductCard = ({ product }) => {
         </div>
         <p>Seller: {product?.seller_name || "Unknown"}</p>
         <p>Price: ${product?.price || "N/A"}</p>
-        <button>+ ADD TO CART</button>
+        <button
+          onClick={handleAddToCart}
+          disabled={isAddingToCart}
+          className={isAddingToCart ? "disabled-button" : ""}
+        >
+          {isAddingToCart ? "Adding..." : "+ ADD TO CART"}
+        </button>
       </div>
     </div>
   );
