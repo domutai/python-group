@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
-=======
-import { Link /*Navigate*/ } from "react-router-dom";
->>>>>>> 5d6a4bd (Finish related products on card Page)
 import {
   thunkCheckout,
   thunkDeleteCart,
