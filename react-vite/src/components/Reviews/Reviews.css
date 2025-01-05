@@ -22,13 +22,11 @@
   font-size: 18px;
 }
 
-.user-review-modal-button {
-  padding: 10px 20px;
+.reviews-container div button {
   font-size: 16px;
   margin-right: 10px;
 }
 
-.reviews-container div button {
-  font-size: 16px;
-  margin-right: 10px;
+.user-review-modal-button:hover {
+  cursor: pointer;
 }

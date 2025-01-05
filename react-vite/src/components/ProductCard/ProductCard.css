@@ -83,28 +83,24 @@
   color: red; 
 }
 
-
 .fa-heart {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: relative;
   font-size: 24px;
   color: #e0e0e0;
-  cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 2;
   background: rgba(255, 255, 255, 0.8);
   padding: 8px;
   border-radius: 50%;
-}
-
-.fa-heart:hover {
-  transform: scale(1.1);
+  z-index: 1;
 }
 
 .fa-heart.favorited {
   color: #ff4444;
   animation: heartPop 0.3s ease;
+}
+
+.fa-heart:hover {
+  transform: scale(1.1);
 }
 
 @keyframes heartPop {
@@ -118,3 +114,24 @@
   position: relative;
   width: 100%;
 }
+
+.heart-modal-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+.heart-modal-button .fa-heart {
+  position: static;  /* Override the absolute positioning when in button */
+  transition: transform 0.2s ease;
+}
+
+.heart-modal-button:hover .fa-heart {
+  transform: scale(1.1);
+}
+

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link /*Navigate*/ } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import {
   thunkCheckout,
   thunkDeleteCart,

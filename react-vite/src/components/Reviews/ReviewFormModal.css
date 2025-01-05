@@ -47,6 +47,9 @@
   background-color: black;
   border-radius: 5px;
 }
+.Review-submit-button-enabled:hover {
+  cursor: pointer;
+}
 
 .star-rating-container {
   display: flex;

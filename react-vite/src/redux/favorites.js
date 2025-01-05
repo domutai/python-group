@@ -1,7 +1,10 @@
+// Action Types
 const LOAD_FAVORITES = "favorites/LOAD_FAVORITES";
 const ADD_FAVORITE = "favorites/ADD_FAVORITE";
 const REMOVE_FAVORITE = "favorites/REMOVE_FAVORITE";
+const CLEAR_FAVORITES = "favorites/CLEAR_FAVORITES";
 
+// Action Creators
 const loadFavorites = (favorites) => ({
   type: LOAD_FAVORITES,
   favorites,
@@ -9,16 +12,19 @@ const loadFavorites = (favorites) => ({
 
 const addFavorite = (favorite) => ({
   type: ADD_FAVORITE,
-  favorite: {
-    ...favorite,
-    productId: favorite.productId || favorite.id,
-  },
+  favorite,
 });
+
 const removeFavorite = (favoriteId) => ({
   type: REMOVE_FAVORITE,
   favoriteId,
 });
 
+export const clearFavorites = () => ({
+  type: CLEAR_FAVORITES,
+});
+
+// Thunks
 export const getFavorites = () => async (dispatch) => {
   try {
     const response = await fetch("/api/favorites/");
@@ -44,13 +50,15 @@ export const addToFavorites = (productId) => async (dispatch) => {
 
     if (response.ok) {
       const data = await response.json();
-
-      const favoriteData = {
-        ...data,
-        productId: productId,
-      };
-      dispatch(addFavorite(favoriteData));
-      return favoriteData;
+      // Make sure we dispatch with all necessary data
+      dispatch(
+        addFavorite({
+          id: data.id,
+          productId: parseInt(productId, 10), // Ensure productId is a number
+          userId: data.userId,
+        })
+      );
+      return data;
     }
   } catch (error) {
     console.error("Error adding favorite:", error);
@@ -64,19 +72,19 @@ export const removeFromFavorites = (favoriteId) => async (dispatch) => {
     });
     if (response.ok) {
       dispatch(removeFavorite(favoriteId));
-    } else {
-      const error = await response.json();
-      throw new Error(error.message || "Failed to remove favorite");
+      return favoriteId;
     }
   } catch (error) {
     console.error("Error removing favorite:", error);
   }
 };
 
+// Initial State
 const initialState = {
   favorites: [],
 };
 
+// Reducer
 const favoritesReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_FAVORITES:
@@ -84,20 +92,31 @@ const favoritesReducer = (state = initialState, action) => {
         ...state,
         favorites: action.favorites,
       };
-    case ADD_FAVORITE:
+    case ADD_FAVORITE: {
+      // Check if the favorite already exists
+      const exists = state.favorites.some(
+        (fav) => fav.id === action.favorite.id
+      );
+      if (exists) return state;
+
       return {
         ...state,
         favorites: [...state.favorites, action.favorite],
       };
+    }
     case REMOVE_FAVORITE: {
-      const updatedFavorites = state.favorites.filter(
-        (favorite) => favorite.id !== action.favoriteId
-      );
       return {
         ...state,
-        favorites: updatedFavorites,
+        favorites: state.favorites.filter(
+          (favorite) => favorite.id !== action.favoriteId
+        ),
       };
     }
+    case CLEAR_FAVORITES:
+      return {
+        ...state,
+        favorites: [],
+      };
     default:
       return state;
   }
