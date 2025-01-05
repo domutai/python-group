@@ -43,3 +43,7 @@
   height: 50px;
   margin: 10px 0px;
 }
+
+.Modal-delete-button:hover{
+  cursor: pointer;
+}
