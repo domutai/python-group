@@ -33,6 +33,10 @@ function ProductDetails() {
     return false
   }
 
+  const handleClick = async () => {
+    dispatch(thunkAddToCart(product.id, 1))
+  }
+
   useEffect(() => {
     dispatch(loadAllProducts());
     dispatch(loadAllReviews(id))
@@ -41,29 +45,30 @@ function ProductDetails() {
   return (
     <div className="product-details-container">
       {product && (
-        <div className="description-price-button-container">
+        <div className="product-info">
           <h1>{product.name}</h1>
-          <div>
-            <img src={product.previewImage} alt={product.name} />
+            <div className="product-details-image">
+              <img src={product.previewImage} alt={product.name} />
+            </div>
+          <div className="description-price-button-container">
+            <div className="product-description">
+              <p>{product.description}</p>
+            </div>
+            <div className="price-button-container">
+              <p>${product.price}</p>
+              <button onClick={handleClick}>Add to Cart</button>
+            </div>
           </div>
           <div>
-            <p>{product.description}</p>
-          </div>
-          <div className="price-button-container">
-            <p>$ {product.price}</p>
-            <button>Add to Cart</button>
-          </div>
-          <div>
-            Reviews
-            <div >
+            <div>
               {reviews?.length > 0 ? (
               <>
                 <span className='num-reviews'>{numOfReviews()}</span>
-                <ImStarFull />
-                {` ${Number(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(2)}`}
                 &nbsp;
                 &middot;
                 &nbsp;
+                <ImStarFull />
+                {` ${Number(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(2)}`}
               </>
               ) : (
               <div>
@@ -73,22 +78,6 @@ function ProductDetails() {
             </div>
           </div>
           <div>
-            {/* <span className='review-stars'>
-              {reviews?.length > 0 ? (
-              <>
-                <ImStarFull />
-                  {` ${Number(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(2)}`}
-                    &nbsp;
-                    &middot;
-                    &nbsp;
-                  
-              </>
-              ) : (
-              <>
-                <ImStarFull style={{ fontSize: 28 }} /> <span style={{ fontSize: 24 }}>New</span>
-              </>
-              )}
-            </span> */}
             <>
             {showReviewButton() ? (
               <>
