@@ -4,6 +4,7 @@ import { FaHeart, FaStar } from "react-icons/fa";
 import { addToFavorites, removeFromFavorites } from "../../redux/favorites";
 import "./ProductCard.css";
 
+<<<<<<< HEAD
 const PLACEHOLDER_IMAGE = "https://placehold.co/300x200/png?text=No+Image";
 
 const ProductCard = ({
@@ -39,6 +40,12 @@ const ProductCard = ({
     } finally {
       setIsLoading(false);
     }
+=======
+const ProductCard = ({ product }) => {
+  const [isFavorited, setIsFavorited] = useState(false);
+  const handleFavoriteClick = () => {
+    setIsFavorited((prev) => !prev);
+>>>>>>> 5d6a4bd (Finish related products on card Page)
   };
 
   if (!product) return null;
