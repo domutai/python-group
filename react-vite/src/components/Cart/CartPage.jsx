@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
+=======
+import { Link /*Navigate*/ } from "react-router-dom";
+>>>>>>> 5d6a4bd (Finish related products on card Page)
 import {
   thunkCheckout,
   thunkDeleteCart,
@@ -10,10 +14,25 @@ import {
 import "./CartPage.css";
 import { loadAllProducts } from "../../redux/product";
 
+import ProductCard from "../ProductCard/ProductCard";
+
 function CartPage() {
   const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session?.user);
   const cart = useSelector((state) => state.cart?.cart);
-  const products = useSelector((state) => state.product); // Keep this
+  const products = useSelector((state) => state.product);
+  const productsArray = Object.entries(products).map(([key, value]) => {
+    return { id: key, ...value };
+  });
+
+  const normalizedSpots = (spotsArray) => {
+    return spotsArray.reduce((normalized, spot) => {
+      normalized[spot.id] = spot;
+      return normalized;
+    }, {});
+  };
+
+  //const [errors, setErrors] = useState({});
   const [quantities, setQuantities] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -31,6 +50,10 @@ function CartPage() {
       setQuantities(initialQuantities);
     }
   }, [cart]);
+
+  if (!sessionUser) {
+    return <h1>Sign in to start adding products to your cart.</h1>;
+  }
 
   const shipping = 3.99;
   const taxRate = 0.08;
@@ -77,11 +100,13 @@ function CartPage() {
       </div>
       <div className="items-box">
         {cart?.map((item) => {
-          const product = products[item.productId];  // Get product here
+          const product = products[item.productId]; // Get product here
           return (
             <div className="cart-item" key={item.id}>
               <div className="cart-item-left">
-                <h4 className="seller-name">{product?.owner?.first_name || 'Seller'}</h4>
+                <h4 className="seller-name">
+                  {product?.owner?.first_name || "Seller"}
+                </h4>
                 <img
                   src={product?.previewImage}
                   alt={product?.name || "Product"}
@@ -119,7 +144,8 @@ function CartPage() {
               <div className="price">
                 <h3>
                   {formatCurrency(
-                    (product?.price || 0) * (quantities[item.id] || item.quantity)
+                    (product?.price || 0) *
+                      (quantities[item.id] || item.quantity)
                   )}
                 </h3>
                 <p>({formatCurrency(product?.price || 0)} each)</p>
@@ -157,6 +183,21 @@ function CartPage() {
       </div>
       <div className="related-box">
         <h3>Related Products</h3>
+        <div className="product-grid">
+          {productsArray.length > 0 ? (
+            productsArray
+              .slice(0, 3)
+              .map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  rating={product.rating}
+                />
+              ))
+          ) : (
+            <div>No products available</div>
+          )}
+        </div>
       </div>
     </div>
   );

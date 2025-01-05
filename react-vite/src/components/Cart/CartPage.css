@@ -208,3 +208,20 @@
     }
   }
   
+.related-box{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+
+  .product-grid {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    width: 96.5%;
+  }
+  

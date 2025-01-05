@@ -123,7 +123,6 @@ const CreateProduct = () => {
               <input
                 type="numeric"
                 placeholder="Price (USD)"
-                value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
               {errors?.price && <p className="error">{errors.price}</p>}

@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loadAllReviews } from "../../redux/review";
+import { ImStarFull } from "react-icons/im";
 import UpdateReview from "./UpdateReviewModal";
 import DeleteReview from "./DeleteReviewModal";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import './Reviews.css';
 
 
 function Reviews({ reviews, id }) {
@@ -32,13 +34,16 @@ function Reviews({ reviews, id }) {
     
   return (
     <div>
-      <div>
+      <div className="reviews-container">
         {reviews?.slice().reverse().map((review) => (
           <div key={review.id}>
-            <p>{review.stars}</p>
-            <p>{review.reviewText}</p>
-            <p>Posted by {findReviewerName(review.userID)}</p>
-            <p>{formatDate(review.createdAt)}</p>
+            <span className="review-stars">
+              {review.stars}
+              &nbsp; 
+              <ImStarFull />
+            </span>
+            <p className="review-text">{review.reviewText}</p>
+            <p className="reviewer-name">Posted by {findReviewerName(review.userID)} on {formatDate(review.createdAt)}</p>
             {sessionUser && sessionUser.id === review.userID ? (
               <>  
                 <OpenModalButton
