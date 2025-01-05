@@ -7,24 +7,24 @@ from sqlalchemy.orm import joinedload
 product_routes = Blueprint("products", __name__, url_prefix="/api/products")
 
 # 1.1 GET /api/products – View All Products
-@product_routes.route("", methods=["GET"])
-def get_all_products():
-    products = Product.query.options(joinedload(Product.owner)).all()
-    return jsonify([
-        {
-            "id": product.id,
-            "owner_id": product.owner_id,
-            "name": product.name,
-            "description": product.description,
-            "price": product.price,
-            "previewImage": product.previewImage,
-            "owner": {
-                "id": product.owner.id,
-                "first_name": product.owner.first_name,
-                "email": product.owner.email
-            } if product.owner else None
-        } for product in products
-    ]), 200
+# @product_routes.route("", methods=["GET"])
+# def get_all_products():
+#     products = Product.query.options(joinedload(Product.owner)).all()
+#     return jsonify([
+#         {
+#             "id": product.id,
+#             "owner_id": product.owner_id,
+#             "name": product.name,
+#             "description": product.description,
+#             "price": product.price,
+#             "previewImage": product.previewImage,
+#             "owner": {
+#                 "id": product.owner.id,
+#                 "first_name": product.owner.first_name,
+#                 "email": product.owner.email
+#             } if product.owner else None
+#         } for product in products
+#     ]), 200
 
 # def get_all_products():
 #     products = Product.query.all()
