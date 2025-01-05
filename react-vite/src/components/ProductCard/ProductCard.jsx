@@ -4,7 +4,6 @@ import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   const [isFavorited, setIsFavorited] = useState(false);
-  console.log("HEEEEEY", product);
   const handleFavoriteClick = () => {
     setIsFavorited((prev) => !prev);
   };
@@ -29,7 +28,9 @@ const ProductCard = ({ product }) => {
         <div className="product-card-header">
           <h3>{product.name || "Unnamed Product"}</h3>
           <div className="product-rating">
-            <span>{product.rating ? product.rating.toFixed(1) : 0}</span>
+            <span>
+              {product.rating ? Number(product.rating).toFixed(1) : 0}
+            </span>
             <FaStar style={{ color: "gold", marginLeft: "5px" }} />
           </div>
         </div>

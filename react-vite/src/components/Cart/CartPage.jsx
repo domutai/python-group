@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, /*Navigate*/ } from "react-router-dom";
+import { Link /*Navigate*/ } from "react-router-dom";
 import {
   thunkCheckout,
   thunkDeleteCart,
@@ -10,11 +10,24 @@ import {
 import "./CartPage.css";
 import { loadAllProducts } from "../../redux/product";
 
+import ProductCard from "../ProductCard/ProductCard";
+
 function CartPage() {
   const dispatch = useDispatch();
-  //const sessionUser = useSelector((state) => state.session?.user);
+  const sessionUser = useSelector((state) => state.session?.user);
   const cart = useSelector((state) => state.cart?.cart);
   const products = useSelector((state) => state.product);
+  const productsArray = Object.entries(products).map(([key, value]) => {
+    return { id: key, ...value };
+  });
+
+  const normalizedSpots = (spotsArray) => {
+    return spotsArray.reduce((normalized, spot) => {
+      normalized[spot.id] = spot;
+      return normalized;
+    }, {});
+  };
+
   //const [errors, setErrors] = useState({});
   const [quantities, setQuantities] = useState({});
 
@@ -33,9 +46,9 @@ function CartPage() {
     }
   }, [cart]);
 
-  // if (!sessionUser) {
-  //   return <Navigate to="/login" />;
-  // }
+  if (!sessionUser) {
+    return <h1>Sign in to start adding products to your cart.</h1>;
+  }
 
   const shipping = 3.99;
   const taxRate = 0.08;
@@ -164,6 +177,21 @@ function CartPage() {
       </div>
       <div className="related-box">
         <h3>Related Products</h3>
+        <div className="product-grid">
+          {productsArray.length > 0 ? (
+            productsArray
+              .slice(0, 3)
+              .map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  rating={product.rating}
+                />
+              ))
+          ) : (
+            <div>No products available</div>
+          )}
+        </div>
       </div>
     </div>
   );
