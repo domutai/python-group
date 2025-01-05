@@ -112,7 +112,7 @@
     margin: 0 0 4px;
   }
   
-  .price p {
+  .price, .item-price {
     font-size: 14px;
     color: #555;
     margin: 0;

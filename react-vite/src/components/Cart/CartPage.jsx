@@ -127,7 +127,9 @@ function CartPage() {
                     product.price * (quantities[item.id] || item.quantity)
                   )}
                 </h3>
-                <p>({formatCurrency(product.price)} each)</p>
+                <p className="item-price">
+                  ({formatCurrency(product.price)} each)
+                </p>
               </div>
             </div>
           );

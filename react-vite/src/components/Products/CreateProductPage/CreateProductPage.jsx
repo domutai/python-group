@@ -1,20 +1,47 @@
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { createProduct } from "../../../redux/product";
 import { useNavigate } from "react-router-dom";
+import { createProduct, postImagesThunk } from "../../../redux/product";
+import "./CreateProductPage.css";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
   const [previewImage, setPreviewImage] = useState("");
   const [errors, setErrors] = useState({});
+  const [imageUrls, setImageUrls] = useState(["", "", "", ""]);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
+
+    const urlRegex = /\.(png|jpg|jpeg)$/;
+    const newErrors = {};
+
+    if (!description.trim() || description.length < 30)
+      newErrors.description = "Description needs a minimum of 30 characters.";
+    if (!name.trim()) newErrors.name = "Name is required.";
+    if (price == null) newErrors.price = "Price is required.";
+    if (!previewImage.match(urlRegex)) {
+      newErrors.previewImage =
+        "Preview Image is required and must end in png, jpg, or jpeg.";
+    }
+
+    imageUrls.forEach((url, index) => {
+      if (url && !url.match(urlRegex)) {
+        newErrors[`imageUrl${index}`] =
+          "Image URL needs to end in png, jpg, or jpeg.";
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     const newProduct = {
       name,
@@ -25,7 +52,19 @@ const CreateProduct = () => {
 
     try {
       const createdProduct = await dispatch(createProduct(newProduct));
-      navigate(`products/${createdProduct.id}`);
+
+      if (createdProduct) {
+        const allImages = [
+          ...imageUrls
+            .filter((url) => url.trim() !== "")
+            .map((url) => ({ url })),
+        ];
+
+        for (const image of allImages) {
+          await dispatch(postImagesThunk(createdProduct.id, image.url));
+        }
+      }
+      navigate(`/products/${createdProduct.id}`);
     } catch (error) {
       const data = await error.json();
       if (data?.errors) {
@@ -78,7 +117,7 @@ const CreateProduct = () => {
             Competitive pricing can help your listing stand out and rank higher
             in search results.
           </p>
-          <div className="form price">
+          <div className="form price-box">
             <div className="input-container">
               <span className="currency-symbol">$</span>
               <input
@@ -105,7 +144,7 @@ const CreateProduct = () => {
             {errors?.previewImage && (
               <p className="error">{errors.previewImage}</p>
             )}
-            {/* {imageUrls.map((url, index) => (
+            {imageUrls.map((url, index) => (
               <div key={index}>
                 <input
                   placeholder={`Image URL ${index + 1}`}
@@ -119,12 +158,12 @@ const CreateProduct = () => {
                 {errors[`imageUrl${index}`] && (
                   <p className="error">{errors[`imageUrl${index}`]}</p>
                 )}
-              </div>"2"222222""222"""""##"!"$%$#""""2222222222
-            ))} */}
+              </div>
+            ))}
           </div>
         </div>
-        <button className="createSpotBtn" type="submit">
-          Create Spot
+        <button className="postProductBtn" type="submit">
+          Post Product
         </button>
       </form>
     </main>
