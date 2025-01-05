@@ -6,7 +6,7 @@ import CreateProductPage from "../components/Products/CreateProductPage/CreatePr
 import Layout from "./Layout";
 import ProductDetails from "../components/Products/ProductDetails";
 import Homepage from "../components/Homepage/Homepage";
-
+import FavoritesPage from '../components/Favorites/FavoritesPage.jsx';
 export const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -38,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: "products/new",
         element: <CreateProductPage />,
+      },
+      {
+        path: "/favorites",
+        element: <FavoritesPage />
       },
     ],
   },

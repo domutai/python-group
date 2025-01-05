@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import ProductCard from "../ProductCard/ProductCard";
+import { getFavorites } from "../../redux/favorites";
 import "./Homepage.css"; 
 
 const Homepage = () => {
+  const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch("/api/products");
-        if (response.ok) {
-          const data = await response.json();
+        const [productsResponse] = await Promise.all([
+          fetch("/api/products"),
+          dispatch(getFavorites())
+        ]);
+
+        if (productsResponse.ok) {
+          const data = await productsResponse.json();
           setProducts(data);
         } else {
           console.error("Failed to fetch products");
@@ -23,8 +30,8 @@ const Homepage = () => {
       }
     };
 
-    fetchProducts();
-  }, []);
+    fetchData();
+  }, [dispatch]);
 
   if (loading) return <div>Loading...</div>;
 
