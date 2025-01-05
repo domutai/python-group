@@ -8,6 +8,7 @@ import { ImStarFull } from 'react-icons/im';
 import Reviews from '../Reviews/Reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import ReviewFormModal from '../Reviews/ReviewFormModal';
+import './ProductDetails.css';`z`
 
 function ProductDetails() {
   const { id } = useParams();
@@ -15,11 +16,6 @@ function ProductDetails() {
   const product = useSelector((state) => state.product[id])
   const reviews = useSelector((state) => state.reviews[id])
   const sessionUser = useSelector(state => state.session.user);
-  const state = useSelector((state) => state);
-  console.log('sessionuser', sessionUser)
-  console.log('state', state)
-  console.log('reviews', reviews)
-  console.log('product', product)
 
   const numOfReviews = () => {
     if(reviews?.length === 1) {
@@ -43,15 +39,17 @@ function ProductDetails() {
   }, [dispatch, id])
 
   return (
-    <div>
+    <div className="product-details-container">
       {product && (
-        <div>
+        <div className="description-price-button-container">
           <h1>{product.name}</h1>
           <div>
             <img src={product.previewImage} alt={product.name} />
           </div>
           <div>
             <p>{product.description}</p>
+          </div>
+          <div className="price-button-container">
             <p>$ {product.price}</p>
             <button>Add to Cart</button>
           </div>
@@ -60,6 +58,7 @@ function ProductDetails() {
             <div >
               {reviews?.length > 0 ? (
               <>
+                <span className='num-reviews'>{numOfReviews()}</span>
                 <ImStarFull />
                 {` ${Number(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(2)}`}
                 &nbsp;
@@ -74,7 +73,7 @@ function ProductDetails() {
             </div>
           </div>
           <div>
-            <span className='review-stars'>
+            {/* <span className='review-stars'>
               {reviews?.length > 0 ? (
               <>
                 <ImStarFull />
@@ -82,14 +81,14 @@ function ProductDetails() {
                     &nbsp;
                     &middot;
                     &nbsp;
-                  <span className='num-reviews'>{numOfReviews()}</span>
+                  
               </>
               ) : (
               <>
                 <ImStarFull style={{ fontSize: 28 }} /> <span style={{ fontSize: 24 }}>New</span>
               </>
               )}
-            </span>
+            </span> */}
             <>
             {showReviewButton() ? (
               <>

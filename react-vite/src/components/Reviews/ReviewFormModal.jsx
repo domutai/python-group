@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import { createReview } from '../../redux/review';
 import { ImStarEmpty, ImStarFull } from "react-icons/im";
 import { useModal } from '../../context/Modal';
-import './Reviews.css';
-
+import './ReviewFormModal.css';
 
 function ReviewFormModal({ id }) {
   const dispatch = useDispatch();
