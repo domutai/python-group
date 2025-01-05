@@ -110,7 +110,7 @@ function CartPage() {
                     }
                     onBlur={() => handleUpdateCart(item.id)}
                   />
-                  <Link to={`/product/${item.id}`} className="edit-link">
+                  <Link to={`/products/${item.id}`} className="edit-link">
                     Edit
                   </Link>
                   <div
@@ -127,7 +127,9 @@ function CartPage() {
                     product.price * (quantities[item.id] || item.quantity)
                   )}
                 </h3>
-                <p>({formatCurrency(product.price)} each)</p>
+                <p className="item-price">
+                  ({formatCurrency(product.price)} each)
+                </p>
               </div>
             </div>
           );
