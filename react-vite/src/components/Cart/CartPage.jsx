@@ -21,16 +21,16 @@ function CartPage() {
     return { id: key, ...value };
   });
 
-  const normalizedSpots = (spotsArray) => {
+  /*const normalizedSpots = (spotsArray) => {
     return spotsArray.reduce((normalized, spot) => {
       normalized[spot.id] = spot;
       return normalized;
     }, {});
-  };
+  };*/
 
   //const [errors, setErrors] = useState({});
   const [quantities, setQuantities] = useState({});
-  const [errors, setErrors] = useState({});
+  const [/*errors,*/ setErrors] = useState({});
 
   useEffect(() => {
     dispatch(thunkGetCart()).catch((error) => setErrors(error));
