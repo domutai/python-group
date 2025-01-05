@@ -21,13 +21,6 @@ function CartPage() {
     return { id: key, ...value };
   });
 
-  const normalizedSpots = (spotsArray) => {
-    return spotsArray.reduce((normalized, spot) => {
-      normalized[spot.id] = spot;
-      return normalized;
-    }, {});
-  };
-
   //const [errors, setErrors] = useState({});
   const [quantities, setQuantities] = useState({});
   const [errors, setErrors] = useState({});
@@ -95,60 +88,66 @@ function CartPage() {
         <p className="items-in-cart">{cart?.length || 0} items in your cart</p>
       </div>
       <div className="items-box">
-        {cart?.map((item) => {
-          const product = products[item.productId]; // Get product here
-          return (
-            <div className="cart-item" key={item.id}>
-              <div className="cart-item-left">
-                <h4 className="seller-name">
-                  {product?.owner?.first_name || "Seller"}
-                </h4>
-                <img
-                  src={product?.previewImage}
-                  alt={product?.name || "Product"}
-                  className="product-image"
-                />
-              </div>
-              <div className="cart-item-middle">
-                <h4 className="product-name">
-                  {product?.name || "Loading..."}
-                </h4>
-                <p className="product-tag">✔ Quantity: {quantities[item.id]}</p>
-                <div className="cart-item-actions">
-                  <input
-                    type="number"
-                    value={quantities[item.id] || item.quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(
-                        item.id,
-                        parseInt(e.target.value, 10) || 0
-                      )
-                    }
-                    onBlur={() => handleUpdateCart(item.id)}
+        {cart.length ? (
+          cart?.map((item) => {
+            const product = products[item.productId];
+            return (
+              <div className="cart-item" key={item.id}>
+                <div className="cart-item-left">
+                  <h4 className="seller-name">
+                    {product?.owner?.first_name || "Seller"}
+                  </h4>
+                  <img
+                    src={product?.previewImage}
+                    alt={product?.name || "Product"}
+                    className="product-image"
                   />
-                  <Link to={`/products/${item.id}`} className="edit-link">
-                    Edit
-                  </Link>
-                  <div
-                    onClick={() => dispatch(thunkDeleteCart(item.id))}
-                    className="remove-link"
-                  >
-                    Remove
+                </div>
+                <div className="cart-item-middle">
+                  <h4 className="product-name">
+                    {product?.name || "Loading..."}
+                  </h4>
+                  <p className="product-tag">
+                    ✔ Quantity: {quantities[item.id]}
+                  </p>
+                  <div className="cart-item-actions">
+                    <input
+                      type="number"
+                      value={quantities[item.id] || item.quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(
+                          item.id,
+                          parseInt(e.target.value, 10) || 0
+                        )
+                      }
+                      onBlur={() => handleUpdateCart(item.id)}
+                    />
+                    <Link to={`/products/${item.id}`} className="edit-link">
+                      Edit
+                    </Link>
+                    <div
+                      onClick={() => dispatch(thunkDeleteCart(item.id))}
+                      className="remove-link"
+                    >
+                      Remove
+                    </div>
                   </div>
                 </div>
+                <div className="price">
+                  <h3>
+                    {formatCurrency(
+                      (product?.price || 0) *
+                        (quantities[item.id] || item.quantity)
+                    )}
+                  </h3>
+                  <p>({formatCurrency(product?.price || 0)} each)</p>
+                </div>
               </div>
-              <div className="price">
-                <h3>
-                  {formatCurrency(
-                    (product?.price || 0) *
-                      (quantities[item.id] || item.quantity)
-                  )}
-                </h3>
-                <p>({formatCurrency(product?.price || 0)} each)</p>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <div>No products available</div>
+        )}
       </div>
       <div className="order-summary">
         <h4>Order Summary</h4>
