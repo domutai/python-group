@@ -12,12 +12,24 @@ function Reviews({ reviews, id }) {
   const dispatch = useDispatch();
   const sessionUser = useSelector(state => state.session.user);
   const products = useSelector((state) => state.product)
-  const users = Object.values(products).map((product) => product.owner);
+  // const users = Object.values(products).map((product) => product.owner);
 
-  const findReviewerName = (userID) => {
-    const reviewer = users.find((user) => user.id === userID);
-    return `${reviewer.first_name}` 
-  }
+  // const findReviewerName = (userID) => {
+  //   const reviewer = users.find((user) => user.id === userID);
+  //   return `${reviewer.first_name}` 
+  // }
+
+
+   const users = Object.values(products)
+   .map((product) => product.owner)
+   .filter((owner) => owner && owner.id && owner.first_name);
+
+
+ const findReviewerName = (userID) => {
+   const reviewer = users.find((user) => user.id === userID);
+   return reviewer ? `${reviewer.first_name}` : "Anonymous";
+ };
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
