@@ -6,7 +6,7 @@ import "./ProfileButton.css";
 
 function ProfileButton() {
   const [showMenu, setShowMenu] = useState(false);
-  const user = useSelector((store) => store.session.user);
+  const user = useSelector((store) => store.session.user); // Fetch the user from Redux
   const ulRef = useRef();
   const navigate = useNavigate();
 
@@ -42,11 +42,18 @@ function ProfileButton() {
       {showMenu && (
         <ul className="profile-dropdown" ref={ulRef}>
           {user && (
-            <li>
-              <button onClick={handleCreateProduct} className="dropdown-button">
-                Create Product
-              </button>
-            </li>
+            <>
+              {/* Display user's name and email */}
+              <li className="profile-info">
+                <p className="user-name">{`${user.firstname} ${user.lastname}`}</p>
+                <p className="user-email">{user.email}</p>
+              </li>
+              <li>
+                <button onClick={handleCreateProduct} className="dropdown-button">
+                  Create Product
+                </button>
+              </li>
+            </>
           )}
         </ul>
       )}

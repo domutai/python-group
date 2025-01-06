@@ -48,3 +48,22 @@
     background-color: #444;
   }
   
+.profile-info {
+    margin-bottom: 10px; 
+    text-align: left; 
+    border-bottom: 1px solid #ddd; 
+    padding-bottom: 10px; 
+  }
+  
+  .user-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .user-email {
+    font-size: 14px;
+    color: #555;
+    margin: 0;
+  }
+  
