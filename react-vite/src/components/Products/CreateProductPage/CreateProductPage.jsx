@@ -85,6 +85,10 @@ const CreateProduct = () => {
     return <Navigate to="/" />;
   }
 
+  if (!userSession) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <main>
       <h1 className="header1">Post a new Product</h1>
