@@ -1,4 +1,4 @@
-import { useDispatch, useSelector, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { createProduct, postImagesThunk } from "../../../redux/product";
