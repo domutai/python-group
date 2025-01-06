@@ -50,6 +50,7 @@ function ProductDetails() {
   }
 
   const isProductOwner = () => {
+    console.log('owner', product.owner_id)
     return sessionUser && product.owner_id === sessionUser.id;
   }
 
