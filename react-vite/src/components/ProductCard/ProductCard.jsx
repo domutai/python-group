@@ -4,9 +4,7 @@ import { FaHeart, FaStar } from "react-icons/fa";
 import { addToFavorites, removeFromFavorites } from "../../redux/favorites";
 import { useModal } from "../../context/Modal";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import LoginFormModal from "../LoginFormModal";
-import { thunkAddToCart } from "../../redux/cart";
 import { thunkAddToCart } from "../../redux/cart";
 import "./ProductCard.css";
 
@@ -21,11 +19,6 @@ const ProductCard = ({ product = {} }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  const existingFavorite = favorites.find(
-    (fav) => fav.productId === product.id
-  );
-  const isProductFavorited = Boolean(existingFavorite);
-  const currentFavoriteId = existingFavorite?.id;
   const existingFavorite = favorites.find(
     (fav) => fav.productId === product.id
   );
