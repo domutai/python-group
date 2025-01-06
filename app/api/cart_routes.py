@@ -1,18 +1,40 @@
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
-from ..models import db, Cart
-
-
+from ..models import db, Cart, Product, User
 
 cart_routes = Blueprint('cart',__name__)
 
 @cart_routes.route('/')
 @login_required
-def index():
-    cart = Cart.query.filter(Cart.userId == current_user.id).all()
-    if not cart:
+def get_cart():
+    cart_items = Cart.query.filter(Cart.userId == current_user.id) \
+                          .join(Product) \
+                          .join(User, Product.owner_id == User.id) \
+                          .all()
+                          
+    if not cart_items:
         return jsonify({'message': 'Shopping cart is empty.'}), 400
-    return jsonify({'cart': [product.to_dict() for product in cart]}), 200
+        
+    return jsonify({
+        'cart': [{
+            'id': item.id,
+            'userId': item.userId,
+            'productId': item.productId,
+            'quantity': item.quantity,
+            'product': {
+                'id': item.product.id,
+                'name': item.product.name,
+                'price': item.product.price,
+                'description': item.product.description,
+                'previewImage': item.product.previewImage,
+                'owner': {
+                    'id': item.product.owner.id,
+                    'first_name': item.product.owner.first_name,
+                    'last_name': item.product.owner.last_name
+                }
+            }
+        } for item in cart_items]
+    }), 200
 
 @cart_routes.route('/', methods=["POST"])
 @login_required
@@ -45,23 +67,27 @@ def add_to_cart():
 
     return jsonify({"message": "Item added to cart successfully"}), 201
 
-@cart_routes.route('/<int:cart_id>', methods=['PUT'])
+@cart_routes.route('/<int:cart_id>/', methods=['PUT'])
 @login_required
 def update_cart(cart_id):
+    print(f"Received PUT request for cart_id: {cart_id}")
     cart_item = Cart.query.get(cart_id)
 
     if not cart_item:
-        return jsonify({"message": "Item not found"}),404
+        print("Cart item not found")
+        return jsonify({"message": "Item not found"}), 404
 
     data = request.get_json()
-    new_quantity =data.get("quantity")
+    print(f"Request data: {data}")
+    new_quantity = int(data.get("quantity"))
 
     if new_quantity <= 0:
+        print("Invalid quantityyyyyyyyyyyyyyyyyyyyyy")
         return jsonify({"message": "Quantity must be greater than 0"}), 400
-    
-    cart_item.quantity = new_quantity
 
+    cart_item.quantity = new_quantity
     db.session.commit()
+    print("Cart item updated successfully")
 
     return jsonify({"item": cart_item.to_dict()}), 200
     
@@ -81,7 +107,7 @@ def delete_cart(cart_id):
     return jsonify({"message": "Item removed from cart"}), 200
 
 
-@cart_routes.route('/checkout', methods=["POST"])
+@cart_routes.route('/checkout/', methods=["POST"])
 @login_required
 def checkout():
     cart = Cart.query.filter(Cart.userId == current_user.id).all()

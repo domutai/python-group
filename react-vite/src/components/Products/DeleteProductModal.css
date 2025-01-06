@@ -1,0 +1,49 @@
+#modal-content {
+  width: 425px;
+  /* border: 5px solid black; */
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  }
+
+.delete-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.delete-modal-container > h2 {
+  font-size: 24px;
+  font-weight: bold;
+  width: 80%;
+  text-align: center;
+}
+
+.delete-modal-container > p {
+  font-size: 23px;
+  margin-top: -10px;
+  margin-left: 17px;
+  margin-right: 17px;
+  text-align: center;
+}
+
+.Delete-yes-button {
+  color: white;
+  background-color: black;
+}
+
+.Delete-no-button {
+  color: black;
+  background-color: white;
+}
+
+.Modal-delete-button {
+  font-size: 16px;
+  width: 390px;
+  height: 50px;
+  margin: 10px 0px;
+}
+
+.Modal-delete-button:hover{
+  cursor: pointer;
+}

@@ -1,15 +1,19 @@
-import { createBrowserRouter } from 'react-router-dom';
-import LoginFormPage from '../components/LoginFormPage';
-import SignupFormPage from '../components/SignupFormPage';
-import Layout from './Layout';
-
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import LoginFormPage from "../components/LoginFormPage";
+import SignupFormPage from "../components/SignupFormPage";
+import CartPage from "../components/Cart";
+import CreateProductPage from "../components/Products/CreateProductPage/CreateProductPage";
+import Layout from "./Layout";
+import ProductDetails from "../components/Products/ProductDetails";
+import Homepage from "../components/Homepage/Homepage";
+import FavoritesPage from '../components/Favorites/FavoritesPage.jsx';
 export const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <Homepage />,
       },
       {
         path: "login",
@@ -18,6 +22,26 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignupFormPage />,
+      },
+      {
+        path: "products/:id",
+        element: <ProductDetails />,
+      },
+      {
+        path: "*",
+        element: <Navigate to="/" />,
+      },
+      {
+        path: "cart",
+        element: <CartPage />,
+      },
+      {
+        path: "products/new",
+        element: <CreateProductPage />,
+      },
+      {
+        path: "/favorites",
+        element: <FavoritesPage />
       },
     ],
   },

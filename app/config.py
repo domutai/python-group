@@ -12,3 +12,8 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL')
     SQLALCHEMY_ECHO = True
+
+
+print(f"Database: {os.environ.get('DATABASE_URL')}")
+print(f"Schema: {os.environ.get('SCHEMA')}")
+print(f"environment: {os.environ.get('FLASK_ENV')}")

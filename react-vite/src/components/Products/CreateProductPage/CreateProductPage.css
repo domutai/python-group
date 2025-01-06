@@ -1,0 +1,108 @@
+
+.header1 {
+  text-align: center;
+}
+
+.header2 {
+    margin-bottom: 0;
+  }
+  
+  .p-descriptions {
+    margin-bottom: 0;
+    color: #111;
+  }
+  
+  label {
+    padding-bottom: 0;
+  }
+  
+  .container {
+      width: 70%;
+      text-align: center;
+      border-top: 2px solid rgba(163, 163, 163, 0.516);
+      margin: auto;
+      margin-top: 2rem;
+  }
+  
+  
+    label {
+      font-weight: bold;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+  
+  
+    #description {
+      width: 102%;
+      height: 150px;
+      min-width: 102%;
+      max-width: 102%;
+      min-height: 50px;
+    }
+  
+    textarea::placeholder {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+  
+    .input-container {
+      position: relative;
+    }
+    
+    .currency-symbol {
+      display: flex;
+      align-items: center;
+      font-size: 1.3rem;
+      width: 3%;
+  
+    }
+    
+    .input-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  
+    .input-container input {
+      width: 91.5%;
+      padding: 0.5rem 0.5rem 0.5rem 1.5rem; 
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    .postProductBtn {
+        /* display: flex; */
+        background-color: #000;
+        color: #fff;
+        border: none;
+        padding: 12px 20px; 
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 20px auto; 
+        display: block; 
+        text-align: center;
+        width: 15%;
+        height: 45px;
+      }
+      
+      .postProductBtn:hover {
+        background-color: #444;
+      }
+      
+    
+  
+    .error {
+      color: red;
+      font-weight: normal;
+      text-align: left;
+      margin: 0;
+    }
