@@ -123,9 +123,6 @@ function CartPage() {
                       }
                       onBlur={() => handleUpdateCart(item.id)}
                     />
-                    <Link to={`/products/${product.id}`} className="edit-link">
-                      Edit
-                    </Link>
                     <div
                       onClick={() => dispatch(thunkDeleteCart(item.id))}
                       className="remove-link"
