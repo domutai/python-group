@@ -34,12 +34,7 @@ const ProductCard = ({ product = {} }) => {
       setModalContent(<LoginFormModal />);
       return;
     }
-    if (!sessionUser) {
-      setModalContent(<LoginFormModal />);
-      return;
-    }
 
-    if (isLoading) return;
     if (isLoading) return;
 
     setIsLoading(true);

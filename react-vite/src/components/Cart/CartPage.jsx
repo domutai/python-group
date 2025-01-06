@@ -123,7 +123,7 @@ function CartPage() {
                       }
                       onBlur={() => handleUpdateCart(item.id)}
                     />
-                    <Link to={`/products/${item.id}`} className="edit-link">
+                    <Link to={`/products/${product.id}`} className="edit-link">
                       Edit
                     </Link>
                     <div
