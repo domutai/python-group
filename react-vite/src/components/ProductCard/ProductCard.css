@@ -13,6 +13,18 @@
   justify-content: space-between;
   margin: 10px;
   position: relative; 
+  cursor: pointer; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+}
+
+.product-card:hover {
+  transform: scale(1.02); 
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); 
+}
+
+.product-card button, 
+.product-card .fa-heart {
+  cursor: default; 
 }
 
 .product-card img {
@@ -91,7 +103,7 @@
   background: rgba(255, 255, 255, 0.8);
   padding: 8px;
   border-radius: 50%;
-  z-index: 1;
+  /*z-index: 1;*/
 }
 
 .fa-heart.favorited {
@@ -108,7 +120,6 @@
   50% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
-
 
 .product-image-container {
   position: relative;
@@ -127,11 +138,10 @@
 }
 
 .heart-modal-button .fa-heart {
-  position: static;  /* Override the absolute positioning when in button */
+  position: static;  
   transition: transform 0.2s ease;
 }
 
 .heart-modal-button:hover .fa-heart {
   transform: scale(1.1);
 }
-

@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaHeart, FaStar } from "react-icons/fa";
 import { addToFavorites, removeFromFavorites } from "../../redux/favorites";
 import { useModal } from "../../context/Modal";
+import { useNavigate } from "react-router-dom"; 
 import LoginFormModal from "../LoginFormModal";
 import { thunkAddToCart } from "../../redux/cart"; 
 import "./ProductCard.css";
 
 const PLACEHOLDER_IMAGE = "https://placehold.co/300x200/png?text=No+Image";
 
-const ProductCard = ({ product = {}, /*isFavorited = false, favoriteId = null*/ }) => {
+const ProductCard = ({ product = {} }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate(); 
     const { setModalContent } = useModal();
     const favorites = useSelector((state) => state.favorites.favorites);
     const sessionUser = useSelector((state) => state.session.user);
@@ -48,7 +50,8 @@ const ProductCard = ({ product = {}, /*isFavorited = false, favoriteId = null*/ 
     };
 
     // Add to Cart logic
-    const handleAddToCart = async () => {
+    const handleAddToCart = async (e) => {
+        e.stopPropagation(); 
         if (!sessionUser) {
             setModalContent(<LoginFormModal />);
             return;
@@ -68,8 +71,13 @@ const ProductCard = ({ product = {}, /*isFavorited = false, favoriteId = null*/ 
         }
     };
 
+    // Card click logic
+    const handleCardClick = () => {
+        navigate(`/products/${product.id}`); 
+    };
+
     return (
-        <div className="product-card">
+        <div className="product-card" onClick={handleCardClick}>
             <div className="product-image-container">
                 <FaHeart
                     className={`fa-heart ${isProductFavorited ? "favorited" : ""} ${
