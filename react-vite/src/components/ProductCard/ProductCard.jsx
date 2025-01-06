@@ -19,7 +19,7 @@ const ProductCard = ({ product = {} }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  const existingFavorite = favorites.find(
+  const existingFavorite = sessionUser && favorites.find(
     (fav) => fav.productId === product.id
   );
   const isProductFavorited = Boolean(existingFavorite);
