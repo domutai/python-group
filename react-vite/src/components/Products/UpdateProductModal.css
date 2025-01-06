@@ -1,0 +1,62 @@
+.review-modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.review-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.review-inputs-top {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.review-inputs-top > input, .review-inputs-top > textarea {
+  padding: 5px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;  
+}
+
+.review-text-area {
+  width: 100%;
+  height: 150px;
+  resize: none;
+  padding: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  font-size: 17px;
+}
+
+.review-submit-button {
+  margin: 10px auto;
+  font-size: 15px;
+  display: block;
+  width: 100%;
+  height: 50px;
+  border: 2px solid black;
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+}
+
+.error {
+  color: red;
+}
