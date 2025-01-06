@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProduct, postImagesThunk } from "../../../redux/product";
 import "./CreateProductPage.css";
@@ -12,8 +12,15 @@ const CreateProduct = () => {
   const [errors, setErrors] = useState({});
   const [imageUrls, setImageUrls] = useState(["", "", "", ""]);
 
+  const user = useSelector((state) => state.session.user); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/"); 
+    }
+  }, [user, navigate]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
