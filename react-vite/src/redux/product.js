@@ -1,8 +1,8 @@
 const LOAD_PRODUCTS = "products/loadProducts";
-// const PRODUCT_DETAILS = 'products/productDetails';
 const ADD_PRODUCT = "products/addProduct";
 const UPDATE_PRODUCT = "products/updateProduct";
 const DELETE_PRODUCT = "products/deleteProduct";
+const PRODUCT_IMAGES = 'products/productImages';
 const POST_IMAGES = "products/postImages";
 
 const loadProducts = (products) => {
@@ -11,13 +11,6 @@ const loadProducts = (products) => {
     products,
   };
 };
-
-// const productDetails = (product) => {
-//   return {
-//     type: PRODUCT_DETAILS,
-//     product
-//   }
-// }
 
 const addProduct = (product) => {
   return {
@@ -39,6 +32,13 @@ const deleteProduct = (id) => {
     id,
   };
 };
+
+const productImages = (images) => {
+  return {
+    type: PRODUCT_IMAGES,
+    images
+  }
+}
 
 const postImages = (productId, url) => ({
   type: POST_IMAGES,
@@ -92,6 +92,16 @@ export const deleteProductThunk = (id) => async (dispatch) => {
   }
 };
 
+export const getProductImages = (id) => async (dispatch) => {
+  const response = await fetch(`/api/products/${id}/images`);
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(productImages(data));
+    return data;
+  }
+};
+
 export const postImagesThunk = (productId, url) => async (dispatch) => {
   const response = await fetch(`/api/products/${productId}/images`, {
     method: "POST",
@@ -117,7 +127,7 @@ const productReducer = (state = initialState, action) => {
       }
       const newState = { ...state };
       action.products.forEach((product) => {
-        newState[product.id] = product;
+        newState[product.id] = {...product, images: []};
       });
       return newState;
     }
@@ -133,6 +143,12 @@ const productReducer = (state = initialState, action) => {
     case DELETE_PRODUCT: {
       const newState = { ...state };
       delete newState[action.id];
+      return newState;
+    }
+    case PRODUCT_IMAGES: {
+      const newState = { ...state };
+      const productId = action.images[0].product_id;
+      newState[productId].images = action.images;
       return newState;
     }
     case POST_IMAGES: {

@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { loadAllProducts } from "../../redux/product";
+import { loadAllProducts, getProductImages } from "../../redux/product";
 import { thunkAddToCart } from "../../redux/cart";
 import { loadAllReviews } from '../../redux/review';
 import { ImStarFull } from 'react-icons/im';
@@ -16,6 +16,7 @@ function ProductDetails() {
   const product = useSelector((state) => state.product[id])
   const reviews = useSelector((state) => state.reviews[id])
   const sessionUser = useSelector(state => state.session.user);
+  const productImages = useSelector((state) => state.product[id]?.images);
 
   const numOfReviews = () => {
     if(reviews?.length === 1) {
@@ -39,7 +40,8 @@ function ProductDetails() {
 
   useEffect(() => {
     dispatch(loadAllProducts());
-    dispatch(loadAllReviews(id))
+    dispatch(loadAllReviews(id));
+    dispatch(getProductImages(id));
   }, [dispatch, id])
 
   return (
@@ -48,7 +50,10 @@ function ProductDetails() {
         <div className="product-info">
           <h1>{product.name}</h1>
             <div className="product-details-image">
-              <img src={product.previewImage} alt={product.name} />
+              {/* <img src={product.previewImage} alt={product.name} /> */}
+              {productImages && productImages.map((image, index) => (
+              <img key={index} src={image.imageURL} alt={product.name} />
+            ))}
             </div>
           <div className="description-price-button-container">
             <div className="product-description">
@@ -63,12 +68,13 @@ function ProductDetails() {
             <div>
               {reviews?.length > 0 ? (
               <>
-                <span className='num-reviews'>{numOfReviews()}</span>
+                <span style={{ fontSize: 20 }}>{numOfReviews()}</span>
                 &nbsp;
-                &middot;
                 &nbsp;
-                <ImStarFull />
-                {` ${Number(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(2)}`}
+                <ImStarFull style={{ fontSize: 20 }}/>
+                <span style={{ fontSize: 20 }}>
+                  {` ${Number(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(2)}`}
+                </span>
               </>
               ) : (
               <div>
