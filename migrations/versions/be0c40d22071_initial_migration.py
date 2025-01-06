@@ -1,8 +1,8 @@
-"""empty message
+"""Initial migration
 
-Revision ID: f641057ab1c6
+Revision ID: be0c40d22071
 Revises: 
-Create Date: 2025-01-05 22:16:27.619726
+Create Date: 2025-01-06 01:52:09.339160
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f641057ab1c6'
+revision = 'be0c40d22071'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,10 +24,11 @@ def upgrade():
     sa.Column('last_name', sa.String(length=50), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
+    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.UniqueConstraint('email'),
+    schema='python_project'
     )
     op.create_table('products',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -36,10 +37,11 @@ def upgrade():
     sa.Column('description', sa.Text(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('previewImage', sa.Text(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['owner_id'], ['python_project.users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('carts',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -48,7 +50,8 @@ def upgrade():
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['productId'], ['python_project.products.id'], ),
     sa.ForeignKeyConstraint(['userId'], ['python_project.users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('favorites',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -56,17 +59,19 @@ def upgrade():
     sa.Column('productId', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['productId'], ['python_project.products.id'], ),
     sa.ForeignKeyConstraint(['userId'], ['python_project.users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('product_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('product_id', sa.Integer(), nullable=False),
     sa.Column('imageURL', sa.Text(), nullable=False),
     sa.Column('isPreview', sa.Boolean(), nullable=True),
-    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('createdAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.Column('updatedAt', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['product_id'], ['python_project.products.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -78,7 +83,8 @@ def upgrade():
     sa.Column('updatedAt', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['productid'], ['python_project.products.id'], ),
     sa.ForeignKeyConstraint(['userID'], ['python_project.users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    schema='python_project'
     )
     # ### end Alembic commands ###
 
