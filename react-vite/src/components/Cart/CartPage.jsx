@@ -82,6 +82,12 @@ function CartPage() {
     dispatch(thunkCheckout());
   };
 
+  function getRandomRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  const randomRange = getRandomRange(0, productsArray.length);
+
   return (
     <div className="cart-page">
       <div className="cart-header">
@@ -179,7 +185,7 @@ function CartPage() {
         <div className="product-grid">
           {productsArray.length > 0 ? (
             productsArray
-              .slice(0, 3)
+              .slice(randomRange, randomRange + 3)
               .map((product) => (
                 <ProductCard
                   key={product.id}
