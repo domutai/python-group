@@ -57,12 +57,6 @@ function ProductDetails() {
     dispatch(thunkAddToCart(product.id, 1))
   }
 
-  // useEffect(() => {
-  //   dispatch(loadAllProducts());
-  //   dispatch(loadAllReviews(id));
-  //   dispatch(getProductImages(id));
-  // }, [dispatch, id])
-
   useEffect(() => {
     const fetchData = async () => {
       try {
