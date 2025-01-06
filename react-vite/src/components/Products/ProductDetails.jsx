@@ -91,7 +91,7 @@ function ProductDetails() {
             </div>
           )}
         </div>
-            <div className="product-details-image">
+            {/* <div className="product-details-image">
             {productImages && (
               <>
                 <button
@@ -113,7 +113,44 @@ function ProductDetails() {
                 </button>
               </>
             )}
-          </div>
+          </div> */}
+          <div className="product-details-image">
+              {/* Render the previewImage */}
+              {product.previewImage && (
+                <div className="preview-image-container">
+                  <img
+                    src={product.previewImage}
+                    alt={`${product.name} preview`}
+                    className="preview-image"
+                  />
+                </div>
+              )}
+
+              {/* Render navigable productImages */}
+              {productImages && productImages.length > 0 && (
+                <>
+                  <button
+                    className="image-nav-button"
+                    onClick={() => handleImageNav("prev")}
+                  >
+                    &#8592;
+                  </button>
+                  <div className="image-container">
+                    {productImages
+                      .slice(currentImageIndex, currentImageIndex + 1)
+                      .map((image, index) => (
+                        <img key={index} src={image.imageURL} alt={product.name} />
+                      ))}
+                  </div>
+                  <button
+                    className="image-nav-button"
+                    onClick={() => handleImageNav("next")}
+                  >
+                    &#8594;
+                  </button>
+                </>
+              )}
+            </div>
           <div className="description-price-button-container">
             <div className="product-description">
               <p>{product.description}</p>
