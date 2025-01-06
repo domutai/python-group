@@ -47,3 +47,7 @@
 .price-button-container > button:hover {
   cursor: pointer;
 }
+
+.review-stars {
+  font-size: 20px;
+}
