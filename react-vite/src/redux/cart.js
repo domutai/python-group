@@ -89,6 +89,7 @@ export const thunkAddToCart = (productId, quantity) => async (dispatch) => {
 
   if (response.ok) {
     dispatch(addToCart(productId, quantity));
+    dispatch(thunkGetCart());
   } else {
     const error = await response.json();
     throw new Error(error.message || "Failed to add item to cart");

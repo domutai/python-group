@@ -21,7 +21,7 @@ function CartPage() {
   const productsArray = Object.entries(products).map(([key, value]) => {
     return { id: key, ...value };
   });
-
+  console.log("CARTTTT", cart);
   //const [errors, setErrors] = useState({});
   const [quantities, setQuantities] = useState({});
   const [/*errors,*/ setErrors] = useState({});
@@ -99,7 +99,7 @@ function CartPage() {
           cart?.map((item) => {
             const product = products[item.productId];
             return (
-              <div className="cart-item" key={item.id}>
+              <div className="cart-item" key={`${item.id}`}>
                 <div className="cart-item-left">
                   <h4 className="seller-name">
                     {product?.owner?.first_name || "Seller"}
