@@ -78,7 +78,7 @@ function CartPage() {
   };
 
   const handleOnClick = () => {
-    alert("Feature coming soon...");
+    alert("Transaction Complete!");
     dispatch(thunkCheckout());
   };
 
