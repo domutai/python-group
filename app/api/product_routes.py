@@ -76,6 +76,10 @@ def get_all_products():
 @login_required
 def create_product():
     data = request.get_json()
+
+    if not data.get("previewImage"):
+        return jsonify({"errors": {"previewImage": "Preview Image is required"}}), 400
+
     new_product = Product(
         owner_id=current_user.id,
         name=data.get("name"),

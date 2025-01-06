@@ -110,3 +110,20 @@
 .review-button-text:hover {
   cursor: pointer;
 }
+
+
+.image-container img,
+.preview-image {
+  width: 400px; 
+  height: 400px; 
+  object-fit: cover; 
+  border-radius: 8px; 
+  border: 1px solid #ccc; 
+  display: block; 
+  margin-right: 250px; 
+}
+
+.preview-image-container {
+  text-align: center;
+  margin-bottom: 20px;
+}

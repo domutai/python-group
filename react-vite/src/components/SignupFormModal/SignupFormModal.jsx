@@ -7,8 +7,10 @@ import "./SignupForm.css";
 function SignupFormModal() {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState(""); 
+  const [lastName, setLastName] = useState(""); 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -27,15 +29,16 @@ function SignupFormModal() {
     const serverResponse = await dispatch(
       thunkSignup({
         email,
-        username,
+        first_name: firstName,
+        last_name: lastName,
         password,
       })
     );
 
     if (serverResponse) {
-      setErrors(serverResponse); 
+      setErrors(serverResponse);
     } else {
-      closeModal(); 
+      closeModal();
     }
   };
 
@@ -54,14 +57,24 @@ function SignupFormModal() {
           {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
         <div className="form-group">
-          <label>Username</label>
+          <label>First Name</label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             required
           />
-          {errors.username && <p className="error-text">{errors.username}</p>}
+          {errors.first_name && <p className="error-text">{errors.first_name}</p>}
+        </div>
+        <div className="form-group">
+          <label>Last Name</label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+          {errors.last_name && <p className="error-text">{errors.last_name}</p>}
         </div>
         <div className="form-group">
           <label>Password</label>
@@ -96,4 +109,3 @@ function SignupFormModal() {
 }
 
 export default SignupFormModal;
-

@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { createProduct, postImagesThunk } from "../../../redux/product";
 import "./CreateProductPage.css";
 
 const CreateProduct = () => {
+  const userSession = useSelector((state) => state.session?.user);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -12,13 +13,14 @@ const CreateProduct = () => {
   const [errors, setErrors] = useState({});
   const [imageUrls, setImageUrls] = useState(["", "", "", ""]);
 
-  const user = useSelector((state) => state.session.user); 
+  const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
-      navigate("/"); 
+      navigate("/");
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -27,6 +29,10 @@ const CreateProduct = () => {
     setErrors({});
 
     const urlRegex = /\.(png|jpg|jpeg)$/;
+    if (!previewImage.match(urlRegex)) {
+      newErrors.previewImage =
+          "Preview Image is required and must end in png, jpg, or jpeg.";
+  }
     const newErrors = {};
 
     if (!description.trim() || description.length < 30)
@@ -79,6 +85,10 @@ const CreateProduct = () => {
       }
     }
   };
+
+  if (!userSession) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <main>
