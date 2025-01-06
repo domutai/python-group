@@ -127,7 +127,7 @@ const productReducer = (state = initialState, action) => {
       }
       const newState = { ...state };
       action.products.forEach((product) => {
-        newState[product.id] = {...product, images: []};
+        newState[product.id] = {...product, images: product.images || []};
       });
       return newState;
     }

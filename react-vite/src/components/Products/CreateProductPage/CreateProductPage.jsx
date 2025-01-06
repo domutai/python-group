@@ -29,6 +29,10 @@ const CreateProduct = () => {
     setErrors({});
 
     const urlRegex = /\.(png|jpg|jpeg)$/;
+    if (!previewImage.match(urlRegex)) {
+      newErrors.previewImage =
+          "Preview Image is required and must end in png, jpg, or jpeg.";
+  }
     const newErrors = {};
 
     if (!description.trim() || description.length < 30)

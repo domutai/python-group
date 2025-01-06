@@ -49,11 +49,30 @@ function ProductDetails() {
       {product && (
         <div className="product-info">
           <h1>{product.name}</h1>
-            <div className="product-details-image">
+            {/* <div className="product-details-image"> */}
               {/* <img src={product.previewImage} alt={product.name} /> */}
-              {productImages && productImages.map((image, index) => (
+              {/* {productImages && productImages.map((image, index) => (
               <img key={index} src={image.imageURL} alt={product.name} />
             ))}
+            </div> */}
+            <div className="product-details-image">
+            {/* Render the previewImage first */}
+              {product.previewImage && (
+               <img
+                src={product.previewImage}
+                alt={`${product.name} preview`}
+                className="preview-image"
+              />
+            )}
+            {/* Render additional product images */}
+            {productImages &&
+              productImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image.imageURL}
+                  alt={`${product.name} additional ${index + 1}`}
+                />
+              ))}
             </div>
           <div className="description-price-button-container">
             <div className="product-description">
