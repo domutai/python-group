@@ -154,7 +154,8 @@ const productReducer = (state = initialState, action) => {
     case POST_IMAGES: {
       const { productId, url } = action;
       const updatedProduct = { ...state[productId] };
-      updatedProduct.images = [...(updatedProduct.images || []), url];
+      // updatedProduct.images = [...(updatedProduct.images || []), url];
+      updatedProduct.images = updatedProduct.images ? [...updatedProduct.images, url] : [url];
       return { ...state, [productId]: updatedProduct };
     }
     default:
