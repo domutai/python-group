@@ -6,7 +6,6 @@ import "./CreateProductPage.css";
 
 const CreateProduct = () => {
   const userSession = useSelector((state) => state.session?.user);
-  const userSession = useSelector((state) => state.session?.user);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -14,7 +13,6 @@ const CreateProduct = () => {
   const [errors, setErrors] = useState({});
   const [imageUrls, setImageUrls] = useState(["", "", "", ""]);
 
-  const user = useSelector((state) => state.session.user);
   const user = useSelector((state) => state.session.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
